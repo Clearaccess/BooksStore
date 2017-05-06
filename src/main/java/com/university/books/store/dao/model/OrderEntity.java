@@ -63,7 +63,7 @@ public class OrderEntity {
         this.paymentId = paymentId;
     }
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "order_date", nullable = false)
     public Date getOrderDate() {
         return orderDate;
@@ -73,7 +73,7 @@ public class OrderEntity {
         this.orderDate = orderDate;
     }
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "executed_date", nullable = true)
     public Date getExecutedDate() {
         return executedDate;

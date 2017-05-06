@@ -71,7 +71,7 @@ public class ReviewEntity {
         this.userId = userId;
     }
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false)
     public Date getCreateDate() {
         return createDate;
@@ -81,7 +81,7 @@ public class ReviewEntity {
         this.createDate = createDate;
     }
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_date", nullable = true)
     public Date getUpdateDate() {
         return updateDate;

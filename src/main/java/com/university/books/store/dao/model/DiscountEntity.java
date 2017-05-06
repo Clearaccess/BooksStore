@@ -50,7 +50,7 @@ public class DiscountEntity {
         this.description = description;
     }
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_date", nullable = false)
     public Date getStartDate() {
         return startDate;
@@ -60,7 +60,7 @@ public class DiscountEntity {
         this.startDate = startDate;
     }
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "stop_date", nullable = false)
     public Date getStopDate() {
         return stopDate;
