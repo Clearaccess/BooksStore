@@ -1,37 +1,39 @@
-package com.university.books.store.dao.model;
+package com.university.books.store.model.entity;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 
 /**
- * Created by Aleksandr on 5/6/2017.
+ * Created by Aleksandr on 5/21/2017.
  */
 @Entity
-@Table(name = "Coupon", schema = "public", catalog = "postgres")
+@Table(name = "coupon", schema = "books_store", catalog = "")
 public class CouponEntity {
-    private int couponId;
+    private long couponId;
     private String description;
-    private double couponPercentage;
-    private Date startDate;
-    private Date stopDate;
+    private double percentage;
+    private Calendar startDate;
+    private Calendar stopDate;
     private int status;
-    private Collection<OrderEntity> ordersByCouponId;
+    private Collection<OrderEntity> orders;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coupon_id", nullable = false)
-    public int getCouponId() {
+    public long getCouponId() {
         return couponId;
     }
 
-    public void setCouponId(int couponId) {
+    public void setCouponId(long couponId) {
         this.couponId = couponId;
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = -1)
+    @Column(name = "description", nullable = true, length = 50)
     public String getDescription() {
         return description;
     }
@@ -41,32 +43,32 @@ public class CouponEntity {
     }
 
     @Basic
-    @Column(name = "coupon_percentage", nullable = false, precision = 0)
-    public double getCouponPercentage() {
-        return couponPercentage;
+    @Column(name = "percentage", nullable = false, precision = 0)
+    public double getPercentage() {
+        return percentage;
     }
 
-    public void setCouponPercentage(double couponPercentage) {
-        this.couponPercentage = couponPercentage;
+    public void setPercentage(double percentage) {
+        this.percentage = percentage;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_date", nullable = false)
-    public Date getStartDate() {
+    public Calendar getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Calendar startDate) {
         this.startDate = startDate;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "stop_date", nullable = false)
-    public Date getStopDate() {
+    public Calendar getStopDate() {
         return stopDate;
     }
 
-    public void setStopDate(Date stopDate) {
+    public void setStopDate(Calendar stopDate) {
         this.stopDate = stopDate;
     }
 
@@ -80,6 +82,16 @@ public class CouponEntity {
         this.status = status;
     }
 
+    @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    public Collection<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Collection<OrderEntity> orders) {
+        this.orders = orders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -88,7 +100,7 @@ public class CouponEntity {
         CouponEntity that = (CouponEntity) o;
 
         if (couponId != that.couponId) return false;
-        if (Double.compare(that.couponPercentage, couponPercentage) != 0) return false;
+        if (Double.compare(that.percentage, percentage) != 0) return false;
         if (status != that.status) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
@@ -101,22 +113,13 @@ public class CouponEntity {
     public int hashCode() {
         int result;
         long temp;
-        result = couponId;
+        result = (int) (couponId ^ (couponId >>> 32));
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        temp = Double.doubleToLongBits(couponPercentage);
+        temp = Double.doubleToLongBits(percentage);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
         result = 31 * result + (stopDate != null ? stopDate.hashCode() : 0);
         result = 31 * result + status;
         return result;
-    }
-
-    @OneToMany(mappedBy = "couponByCouponId")
-    public Collection<OrderEntity> getOrdersByCouponId() {
-        return ordersByCouponId;
-    }
-
-    public void setOrdersByCouponId(Collection<OrderEntity> ordersByCouponId) {
-        this.ordersByCouponId = ordersByCouponId;
     }
 }

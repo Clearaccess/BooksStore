@@ -1,37 +1,52 @@
-package com.university.books.store.dao.model;
+package com.university.books.store.model.entity;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 /**
- * Created by Aleksandr on 5/6/2017.
+ * Created by Aleksandr on 5/21/2017.
  */
 @Entity
-@Table(name = "Role", schema = "public", catalog = "postgres")
+@Table(name = "role", schema = "books_store", catalog = "")
 public class RoleEntity {
-    private int roleId;
+    private long roleId;
     private String description;
-    private Collection<UserEntity> usersByRoleId;
+    private Collection<UserEntity> users;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", nullable = false)
-    public int getRoleId() {
+    public long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(long roleId) {
         this.roleId = roleId;
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = -1)
+    @Column(name = "description", nullable = false, length = 50)
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "User_role",
+            joinColumns = @JoinColumn(name="role_id"),
+            inverseJoinColumns = @JoinColumn(name="user_id"))
+    @Fetch(FetchMode.SELECT)
+    public Collection<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Collection<UserEntity> users) {
+        this.users = users;
     }
 
     @Override
@@ -49,20 +64,8 @@ public class RoleEntity {
 
     @Override
     public int hashCode() {
-        int result = roleId;
+        int result = (int) (roleId ^ (roleId >>> 32));
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
-    }
-
-    @ManyToMany
-    @JoinTable(name = "User_role",
-            joinColumns = @JoinColumn(name="role_id"),
-            inverseJoinColumns = @JoinColumn(name="user_id"))
-    public Collection<UserEntity> getUsersByRoleId() {
-        return usersByRoleId;
-    }
-
-    public void setUsersByRoleId(Collection<UserEntity> usersByRoleId) {
-        this.usersByRoleId = usersByRoleId;
     }
 }

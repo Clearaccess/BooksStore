@@ -1,37 +1,49 @@
-package com.university.books.store.dao.model;
+package com.university.books.store.model.entity;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 /**
- * Created by Aleksandr on 5/6/2017.
+ * Created by Aleksandr on 5/21/2017.
  */
 @Entity
-@Table(name = "Category", schema = "public", catalog = "postgres")
+@Table(name = "category", schema = "books_store", catalog = "")
 public class CategoryEntity {
-    private int categoryId;
+    private long categoryId;
     private String name;
-    private Collection<BookEntity> booksByCategoryId;
+    private Collection<BookEntity> books;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id", nullable = false)
-    public int getCategoryId() {
+    public long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = -1)
+    @Column(name = "name", nullable = false, length = 50)
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    public Collection<BookEntity> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Collection<BookEntity> books) {
+        this.books = books;
     }
 
     @Override
@@ -49,20 +61,8 @@ public class CategoryEntity {
 
     @Override
     public int hashCode() {
-        int result = categoryId;
+        int result = (int) (categoryId ^ (categoryId >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
-    }
-
-    @ManyToMany
-    @JoinTable(name = "Book_category",
-            joinColumns = @JoinColumn(name="category_id"),
-            inverseJoinColumns = @JoinColumn(name="book_id"))
-    public Collection<BookEntity> getBooksByCategoryId() {
-        return booksByCategoryId;
-    }
-
-    public void setBooksByCategoryId(Collection<BookEntity> booksByCategoryId) {
-        this.booksByCategoryId = booksByCategoryId;
     }
 }

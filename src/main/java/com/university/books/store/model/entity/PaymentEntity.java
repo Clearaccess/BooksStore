@@ -1,33 +1,35 @@
-package com.university.books.store.dao.model;
+package com.university.books.store.model.entity;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 /**
- * Created by Aleksandr on 5/6/2017.
+ * Created by Aleksandr on 5/21/2017.
  */
 @Entity
-@Table(name = "Payment", schema = "public", catalog = "postgres")
+@Table(name = "payment", schema = "books_store", catalog = "")
 public class PaymentEntity {
-    private int paymentId;
+    private long paymentId;
     private String name;
     private String description;
-    private Collection<OrderEntity> ordersByPaymentId;
-    private Collection<OrderPaymentEntity> orderPaymentsByPaymentId;
+    private Collection<OrderEntity> orders;
+    private Collection<OrderPaymentEntity> orderPayments;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id", nullable = false)
-    public int getPaymentId() {
+    public long getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(int paymentId) {
+    public void setPaymentId(long paymentId) {
         this.paymentId = paymentId;
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = -1)
+    @Column(name = "name", nullable = false, length = 50)
     public String getName() {
         return name;
     }
@@ -37,13 +39,33 @@ public class PaymentEntity {
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = -1)
+    @Column(name = "description", nullable = true, length = 50)
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    public Collection<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Collection<OrderEntity> orders) {
+        this.orders = orders;
+    }
+
+    @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    public Collection<OrderPaymentEntity> getOrderPayments() {
+        return orderPayments;
+    }
+
+    public void setOrderPayments(Collection<OrderPaymentEntity> orderPayments) {
+        this.orderPayments = orderPayments;
     }
 
     @Override
@@ -62,27 +84,9 @@ public class PaymentEntity {
 
     @Override
     public int hashCode() {
-        int result = paymentId;
+        int result = (int) (paymentId ^ (paymentId >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "paymentByPaymentId")
-    public Collection<OrderEntity> getOrdersByPaymentId() {
-        return ordersByPaymentId;
-    }
-
-    public void setOrdersByPaymentId(Collection<OrderEntity> ordersByPaymentId) {
-        this.ordersByPaymentId = ordersByPaymentId;
-    }
-
-    @OneToMany(mappedBy = "paymentByPaymentId")
-    public Collection<OrderPaymentEntity> getOrderPaymentsByPaymentId() {
-        return orderPaymentsByPaymentId;
-    }
-
-    public void setOrderPaymentsByPaymentId(Collection<OrderPaymentEntity> orderPaymentsByPaymentId) {
-        this.orderPaymentsByPaymentId = orderPaymentsByPaymentId;
     }
 }

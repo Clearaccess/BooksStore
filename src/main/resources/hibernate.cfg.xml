@@ -4,46 +4,29 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="connection.url">jdbc:postgresql://localhost:5432/postgres</property>
-        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/books_store?serverTimezone=UTC</property>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
 
         <!-- NOTE that after automapping with IDEA property username and password will delete -->
         <!--and will be:  Initial SessionFactory failedorg.hibernate.service.spi.ServiceException: Unable to create requested service-->
+        <property name="connection.username">root</property>
+        <property name="connection.password">89020438921</property>
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <!-- NOTE that after automapping with IDEA property username and password will delete -->
-        <mapping package="com.university.books.store.dao.modelT"></mapping>
-        <mapping class="com.university.books.store.dao.modelT.AddressEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.BookEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.BookCategoryEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.CategoryEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.CouponEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.DiscountEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.OrderEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.OrderAddressEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.OrderDetailEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.OrderPaymentEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.PaymentEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.ReviewEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.RoleEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.UserEntity"/>
-        <mapping class="com.university.books.store.dao.modelT.WishEntity"/>
-        <mapping class="com.university.books.store.dao.model.AddressEntity"/>
-        <mapping class="com.university.books.store.dao.model.BookEntity"/>
-        <mapping class="com.university.books.store.dao.model.BookCategoryEntity"/>
-        <mapping class="com.university.books.store.dao.model.CategoryEntity"/>
-        <mapping class="com.university.books.store.dao.model.CouponEntity"/>
-        <mapping class="com.university.books.store.dao.model.DiscountEntity"/>
-        <mapping class="com.university.books.store.dao.model.OrderEntity"/>
-        <mapping class="com.university.books.store.dao.model.OrderDetailEntity"/>
-        <mapping class="com.university.books.store.dao.model.OrderPaymentEntity"/>
-        <mapping class="com.university.books.store.dao.model.PaymentEntity"/>
-        <mapping class="com.university.books.store.dao.model.ReviewEntity"/>
-        <mapping class="com.university.books.store.dao.model.RoleEntity"/>
-        <mapping class="com.university.books.store.dao.model.UserEntity"/>
-        <mapping class="com.university.books.store.dao.model.UserRoleEntity"/>
-        <mapping class="com.university.books.store.dao.model.WishEntity"/>
+        <mapping class="com.university.books.store.model.entity.AddressEntity"/>
+        <mapping class="com.university.books.store.model.entity.BookEntity"/>
+        <mapping class="com.university.books.store.model.entity.CategoryEntity"/>
+        <mapping class="com.university.books.store.model.entity.CouponEntity"/>
+        <mapping class="com.university.books.store.model.entity.DiscountEntity"/>
+        <mapping class="com.university.books.store.model.entity.OrderEntity"/>
+        <mapping class="com.university.books.store.model.entity.OrderDetailEntity"/>
+        <mapping class="com.university.books.store.model.entity.OrderPaymentEntity"/>
+        <mapping class="com.university.books.store.model.entity.PaymentEntity"/>
+        <mapping class="com.university.books.store.model.entity.ReviewEntity"/>
+        <mapping class="com.university.books.store.model.entity.RoleEntity"/>
+        <mapping class="com.university.books.store.model.entity.UserEntity"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
     </session-factory>

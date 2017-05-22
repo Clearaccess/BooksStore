@@ -1,6 +1,7 @@
 package com.university.books.store.configuration;
 
-import com.university.books.store.converter.RoleToUserProfileConverter;
+import com.university.books.store.model.entity.RoleEntity;
+import com.university.books.store.model.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -17,10 +18,6 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.university.books.store")
 public class AppConfig extends WebMvcConfigurerAdapter{
-	
-	
-	@Autowired
-	RoleToUserProfileConverter roleToUserProfileConverter;
 	
 
 	/**
@@ -42,15 +39,6 @@ public class AppConfig extends WebMvcConfigurerAdapter{
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
-    }
-    
-    /**
-     * Configure Converter to be used.
-     * In our example, we need a converter to convert string values[Roles] to UserProfiles in newUser.jsp
-     */
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(roleToUserProfileConverter);
     }
 	
 
