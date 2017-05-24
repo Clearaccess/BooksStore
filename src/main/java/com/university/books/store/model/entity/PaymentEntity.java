@@ -19,6 +19,7 @@ public class PaymentEntity {
     private Collection<OrderPaymentEntity> orderPayments;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id", nullable = false)
     public long getPaymentId() {
         return paymentId;

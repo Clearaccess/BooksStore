@@ -33,6 +33,7 @@ public class OrderEntity {
     private Collection<OrderPaymentEntity> orderPayments;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id", nullable = false)
     public long getOrderId() {
         return orderId;

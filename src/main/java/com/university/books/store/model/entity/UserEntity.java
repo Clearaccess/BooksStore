@@ -19,6 +19,7 @@ public class UserEntity {
     private String password;
     private String email;
     private String phone;
+    private BagEntity bag;
     private Collection<AddressEntity> addresses;
     private Collection<OrderEntity> orders;
     private Collection<ReviewEntity> reviews;
@@ -26,6 +27,7 @@ public class UserEntity {
     private Collection<BookEntity> wishBooks;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     public long getUserId() {
         return userId;
@@ -177,6 +179,16 @@ public class UserEntity {
 
     public void setWishBooks(Collection<BookEntity> wishBooks) {
         this.wishBooks = wishBooks;
+    }
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    public BagEntity getBag(){
+        return bag;
+    }
+
+    public void setBag(BagEntity bag){
+        this.bag=bag;
     }
 
     @Override

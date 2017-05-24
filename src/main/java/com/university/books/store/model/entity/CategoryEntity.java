@@ -17,6 +17,7 @@ public class CategoryEntity {
     private Collection<BookEntity> books;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id", nullable = false)
     public long getCategoryId() {
         return categoryId;

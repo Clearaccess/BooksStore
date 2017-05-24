@@ -17,6 +17,7 @@ public class RoleEntity {
     private Collection<UserEntity> users;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", nullable = false)
     public long getRoleId() {
         return roleId;

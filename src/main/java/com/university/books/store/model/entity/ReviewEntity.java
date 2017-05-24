@@ -22,6 +22,7 @@ public class ReviewEntity {
     private UserEntity user;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id", nullable = false)
     public long getReviewId() {
         return reviewId;

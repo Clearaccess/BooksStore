@@ -22,6 +22,7 @@ public class AddressEntity {
     private UserEntity user;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_id", nullable = false)
     public long getAddressId() {
         return addressId;

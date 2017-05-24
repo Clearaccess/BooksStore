@@ -23,6 +23,7 @@ public class CouponEntity {
     private Collection<OrderEntity> orders;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coupon_id", nullable = false)
     public long getCouponId() {
         return couponId;

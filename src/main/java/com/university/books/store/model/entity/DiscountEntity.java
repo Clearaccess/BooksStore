@@ -22,6 +22,7 @@ public class DiscountEntity {
     private BookEntity book;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "discount_id", nullable = false)
     public long getDiscountId() {
         return discountId;

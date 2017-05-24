@@ -18,6 +18,7 @@ public class OrderPaymentEntity {
     private OrderEntity order;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "op_id", nullable = false)
     public long getOpId() {
         return opId;

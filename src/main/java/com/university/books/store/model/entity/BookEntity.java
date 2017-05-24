@@ -36,6 +36,7 @@ public class BookEntity {
     private Collection<UserEntity> wishUsers;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id", nullable = false)
     public long getBookId() {
         return bookId;

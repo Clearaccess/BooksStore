@@ -18,6 +18,7 @@ public class OrderDetailEntity {
     private BookEntity book;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "od_id", nullable = false)
     public long getOdId() {
         return odId;
