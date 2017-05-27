@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * Created by Aleksandr on 5/15/2017.
  */
-@Repository("couponRepositoryDao")
-public class CouponDAOImpl extends AbstractDao<Integer,CouponEntity> implements CouponDAO {
+@Repository("couponRepository")
+public class CouponDAOImpl extends AbstractDao<Long,CouponEntity> implements CouponDAO {
     @Override
-    public CouponEntity findById(int id) {
+    public CouponEntity findById(long id) {
         CouponEntity coupon=getByKey(id);
         return coupon;
     }
@@ -34,12 +34,12 @@ public class CouponDAOImpl extends AbstractDao<Integer,CouponEntity> implements 
     }
 
     @Override
-    public void change(CouponEntity coupon) {
-        update(coupon);
+    public void update(CouponEntity coupon) {
+        super.update(coupon);
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.eq("coupon_id",id));
         CouponEntity coupon=(CouponEntity) criteria.uniqueResult();

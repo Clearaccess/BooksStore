@@ -8,13 +8,15 @@ import java.util.List;
  * Created by Aleksandr on 5/15/2017.
  */
 public interface DiscountDAO {
-    DiscountEntity findById(int id);
+    DiscountEntity findById(long id);
 
-    List<DiscountEntity> findAllDiscounts();
+    List<DiscountEntity> findAllDiscounts(int begPos, int limit);
+
+    List<DiscountEntity> findNewestDiscounts(int begPos, int limit);
 
     void save(DiscountEntity discount);
 
-    void change(DiscountEntity discount);
+    void update(DiscountEntity discount);
 
-    void deleteById(int id);
+    void deleteById(long id);
 }

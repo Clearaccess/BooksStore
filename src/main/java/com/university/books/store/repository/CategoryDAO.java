@@ -8,15 +8,15 @@ import java.util.List;
  * Created by Aleksandr on 5/15/2017.
  */
 public interface CategoryDAO {
-    CategoryEntity findById(int id);
+    CategoryEntity findById(long id);
 
     List<CategoryEntity> findAllCategories();
 
     void save(CategoryEntity category);
 
-    void change(CategoryEntity category);
+    void update(CategoryEntity category);
 
-    void deleteById(int id);
+    void deleteById(long id);
 
-    int countCategories(int id);
+    int countCategories();
 }

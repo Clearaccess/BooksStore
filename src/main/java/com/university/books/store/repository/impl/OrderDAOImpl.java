@@ -12,12 +12,21 @@ import java.util.List;
 /**
  * Created by Aleksandr on 5/15/2017.
  */
-@Repository("orderRepositoryDao")
-public class OrderDAOImpl extends AbstractDao<Integer,OrderEntity> implements OrderDAO {
+@Repository("orderRepository")
+public class OrderDAOImpl extends AbstractDao<Long,OrderEntity> implements OrderDAO {
     @Override
-    public OrderEntity findById(int id) {
+    public OrderEntity findById(long id) {
         OrderEntity order=getByKey(id);
         return order;
+    }
+
+    @Override
+    public List<OrderEntity> findAllOrderByUserId(long userId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("user_id",userId))
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<OrderEntity> orders = (List<OrderEntity>) criteria.list();
+        return orders;
     }
 
     @Override
@@ -34,12 +43,12 @@ public class OrderDAOImpl extends AbstractDao<Integer,OrderEntity> implements Or
     }
 
     @Override
-    public void change(OrderEntity order) {
-        update(order);
+    public void update(OrderEntity order) {
+        super.update(order);
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.eq("order_id",id));
         OrderEntity order=(OrderEntity) criteria.uniqueResult();

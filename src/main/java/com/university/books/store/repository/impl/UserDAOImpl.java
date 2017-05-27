@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * Created by Aleksandr on 5/15/2017.
  */
-@Repository("userRepositoryDao")
-public class UserDAOImpl extends AbstractDao<Integer, UserEntity> implements UserDAO {
+@Repository("userRepository")
+public class UserDAOImpl extends AbstractDao<Long, UserEntity> implements UserDAO {
 
     @Override
-    public UserEntity findById(int id) {
+    public UserEntity findById(long id) {
         UserEntity user=getByKey(id);
         return user;
     }
@@ -35,12 +35,12 @@ public class UserDAOImpl extends AbstractDao<Integer, UserEntity> implements Use
     }
 
     @Override
-    public void change(UserEntity user) {
-        update(user);
+    public void update(UserEntity user) {
+        super.update(user);
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.eq("user_id",id));
         UserEntity user=(UserEntity) criteria.uniqueResult();

@@ -8,13 +8,13 @@ import java.util.List;
  * Created by Aleksandr on 5/15/2017.
  */
 public interface CouponDAO {
-    CouponEntity findById(int id);
+    CouponEntity findById(long id);
 
     List<CouponEntity> findAllCoupons();
 
     void save(CouponEntity coupon);
 
-    void change(CouponEntity coupon);
+    void update(CouponEntity coupon);
 
-    void deleteById(int id);
+    void deleteById(long id);
 }

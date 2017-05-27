@@ -8,13 +8,16 @@ import java.util.List;
  * Created by Aleksandr on 5/15/2017.
  */
 public interface OrderDAO {
-    OrderEntity findById(int id);
+
+    OrderEntity findById(long id);
+
+    List<OrderEntity> findAllOrderByUserId(long userId);
 
     List<OrderEntity> findAllOrders();
 
     void save(OrderEntity order);
 
-    void change(OrderEntity order);
+    void update(OrderEntity order);
 
-    void deleteById(int id);
+    void deleteById(long id);
 }

@@ -8,13 +8,13 @@ import java.util.List;
  * Created by Aleksandr on 5/15/2017.
  */
 public interface UserDAO {
-    UserEntity findById(int id);
+    UserEntity findById(long id);
 
     List<UserEntity> findAllUsers();
 
     void save(UserEntity user);
 
-    void change(UserEntity user);
+    void update(UserEntity user);
 
-    void deleteById(int id);
+    void deleteById(long id);
 }
