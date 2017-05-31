@@ -126,7 +126,7 @@ public class UserEntity {
         this.orders = orders;
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     public Collection<ReviewEntity> getReviews() {
         return reviews;

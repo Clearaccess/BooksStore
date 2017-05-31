@@ -37,7 +37,7 @@ public class CategoryEntity {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     public Collection<BookEntity> getBooks() {
         return books;

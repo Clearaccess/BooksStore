@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap.min.css}" href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap-theme.min.css}" href="static/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Font-awesome -->
+    <link th:href="@{/static/vendor/font-awesome/css/font-awesome.min.css}" href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- OwlCarusel2 -->
+    <link th:href="@{/static/vendor/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet" href="static/vendor/owlcarousel/assets/owl.carousel.min.css">
+    <link th:href="@{/static/vendor/owlcarousel/assets/owl.theme.default.min.css}" rel="stylesheet" href="static/vendor/owlcarousel/assets/owl.theme.default.min.css">
+    <!-- Custom styles -->
+    <link th:href="@{/static/css/checout.css}" href="static/css/checout.css" rel="stylesheet" type="text/css">
+    <link th:href="@{/static/css/bootstrap-overrides.css}" href="static/css/bootstrap-overrides.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<!-- Header -->
+<nav class="navbar navbar-default navbar-fixed-top header">
+    <div class="container">
+        <ul class="nav navbar-nav navbar-left">
+            <ul class="pager">
+                <li><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+            </ul>
+        </ul>
+    </div>
+</nav>
+<!-- End Header -->
+
+<div class="container bs-checkout-header">
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-3">
+            <h2>Подробности</h2>
+        </div>
+        <div class="col-sm-offset-6 col-sm-2 text-right">
+                <ul class="pager">
+                    <li><a href="#">Редактировать</a></li>
+                </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Информация о покупателе, способы оплаты и доставки -->
+        <div class="col-sm-offset-1 col-sm-6">
+            <div class="row text-center">
+                <div class="col-sm-6">
+                    <h4>Имя</h4>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Фамилия</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-sm-6">
+                    <h4>E-Mail</h4>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Номер телефона</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-sm-4">
+                    <h4>Почтовый индекс</h4>
+                </div>
+                <div class="col-sm-8">
+                    <h4>Адрес</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-sm-6">
+                    <h4>Город</h4>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Страна</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Способ доставки и оплаты -->
+            <div class="row text-center bs-checkout-header-pay">
+                <div class="col-sm-6">
+                    <h2>Способ доставки</h2>
+                </div>
+                <div class="col-sm-6">
+                    <h2>Способ оплаты</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="radio">
+                        <label><input type="radio" name="optradio">Почта России, предоплата</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="optradio">Почта России, оплата при получении</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="optradio">Самовывоз</label>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="radio">
+                        <div class="col-sm-6">
+                            <label><input type="radio" name="optradio1">PayPal</label>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <i class="fa fa-cc-paypal fa-3x" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="radio">
+                        <div class="col-sm-6">
+                            <label><input type="radio" name="optradio1">MasterCard</label>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <i class="fa fa-cc-mastercard fa-3x" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="radio">
+                        <div class="col-sm-6">
+                            <label><input type="radio" name="optradio1">Visa</label>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <i class="fa fa-cc-visa fa-3x" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Содержимое корзины -->
+        <div class="col-sm-offset-1 col-sm-4">
+            <div class="row well">
+                <div class="col-sm-3">
+                    <img class="img-thumbnail" src="http://placehold.it/300x400">
+                </div>
+                <div class="col-sm-5 text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>2xНазвание книги</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <p>200 <span class="glyphicon glyphicon-rub"></span></p>
+                </div>
+            </div>
+            <div class="row well">
+                <div class="col-sm-3">
+                    <img class="img-thumbnail" src="http://placehold.it/300x400">
+                </div>
+                <div class="col-sm-5 text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>2xНазвание книги</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <p>200 <span class="glyphicon glyphicon-rub"></span></p>
+                </div>
+            </div>
+            <div class="row well">
+                <div class="col-sm-3">
+                    <img class="img-thumbnail" src="http://placehold.it/300x400">
+                </div>
+                <div class="col-sm-5 text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>2xНазвание книги</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <p>200 <span class="glyphicon glyphicon-rub"></span></p>
+                </div>
+            </div>
+            <div class="row well">
+                <div class="col-sm-3">
+                    <img class="img-thumbnail" src="http://placehold.it/300x400">
+                </div>
+                <div class="col-sm-5 text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>2xНазвание книги</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <p>200 <span class="glyphicon glyphicon-rub"></span></p>
+                </div>
+            </div>
+            <div class="row well">
+                <div class="col-sm-3">
+                    <img class="img-thumbnail" src="http://placehold.it/300x400">
+                </div>
+                <div class="col-sm-5 text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>2xНазвание книги</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <p>200 <span class="glyphicon glyphicon-rub"></span></p>
+                </div>
+            </div>
+            <div class="row well">
+                <div class="col-sm-3">
+                    <img class="img-thumbnail" src="http://placehold.it/300x400">
+                </div>
+                <div class="col-sm-5 text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>2xНазвание книги</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <p>200 <span class="glyphicon glyphicon-rub"></span></p>
+                </div>
+            </div>
+            <div class="row well">
+                <div class="col-sm-3">
+                    <img class="img-thumbnail" src="http://placehold.it/300x400">
+                </div>
+                <div class="col-sm-5 text-center">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>2xНазвание книги</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <p>200 <span class="glyphicon glyphicon-rub"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/fragments/footer.html"></div>
+
+<!-- jQuery -->
+<script th:src="@{/static/vendor/jquery/jquery-3.1.1.min.js}"></script>
+<!--Bootstrap scripts-->
+<script th:src="@{/static/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<!-- OwlCarousal2 -->
+<script th:src="@{/static/vendor/owlcarousel/owl.carousel.min.js}"></script>
+<!-- Custom scripts -->
+<script th:src="@{/static/js/app.js}"></script>
+
+</body>
+</html>

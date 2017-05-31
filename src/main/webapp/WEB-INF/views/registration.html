@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books Store</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap.min.css}"
+          href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap-theme.min.css}"
+          href="static/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Font-awesome -->
+    <link th:href="@{/static/vendor/font-awesome/css/font-awesome.min.css}"
+          href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- OwlCarusel2 -->
+    <link th:href="@{/static/vendor/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet"
+          href="static/vendor/owlcarousel/assets/owl.carousel.min.css">
+    <link th:href="@{/static/vendor/owlcarousel/assets/owl.theme.default.min.css}" rel="stylesheet"
+          href="static/vendor/owlcarousel/assets/owl.theme.default.min.css">
+    <!-- Custom styles -->
+    <link th:href="@{/static/css/registration.css}" href="static/css/registration.css" rel="stylesheet" type="text/css">
+    <link th:href="@{/static/css/footer.css}" href="static/css/footer.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div th:replace="/fragments/toolbar.html"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="form-signin-heading form-title text-center">Регистрация</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <form class="form-horizontal" id="form" action="register" th:action="@{/register/}" method="POST">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label for="firstName" class="col-sm-2 control-label">Имя:</label>
+                                <div class="col-sm-10">
+                                    <input name="firstName" value="" type="text" class="form-control" id="firstName"
+                                           placeholder="Full name" required autofocus>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label for="lastName" class="col-sm-2 control-label">Фамилия:</label>
+                                <div class="col-sm-10">
+                                    <input name="lastName" value="" type="text" class="form-control" id="lastName"
+                                           placeholder="Full name" required autofocus>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <label for="email" class="col-sm-2 control-label">E-Mail:</label>
+                        <div class="col-sm-10">
+                            <input name="email" value="" type="text" class="form-control" id="email"
+                                   placeholder="Billing address" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 form-group">
+                        <label for="phone" class="col-sm-2 control-label">Номер телефона:</label>
+                        <div class="col-sm-10">
+                            <input name="phone" value="" type="text" class="form-control" id="phone"
+                                   placeholder="Billing address" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <label for="postcode" class="col-sm-2 control-label">Почтовый индекс:</label>
+                        <div class="col-sm-10">
+                            <input name="postcode" value="" type="text" class="form-control" id="postcode"
+                                   placeholder="Billing address" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 form-group">
+                        <label for="address" class="col-sm-2 control-label">Адрес:</label>
+                        <div class="col-sm-10">
+                            <input name="address" value="" type="text" class="form-control" id="address"
+                                   placeholder="Billing address" required>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <label for="city" class="col-sm-2 control-label">Город:</label>
+                        <div class="col-sm-10">
+                            <input name="city" value="" type="text" class="form-control" id="city"
+                                   placeholder="Billing address" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 form-group">
+                        <label for="country" class="col-sm-2 control-label">Страна:</label>
+                        <div class="col-sm-10">
+                            <input name="country" value="" type="text" class="form-control" id="country"
+                                   placeholder="Billing address" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <label for="login" class="col-sm-2 control-label">Логин: </label>
+                        <div class="col-sm-10">
+                            <input name="login" value="" type="text" class="form-control" id="login"
+                                   placeholder="Login"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row form-group">
+                            <label for="password" class="col-sm-3 control-label">Пароль: </label>
+                            <div class="col-sm-8">
+                                <input name="password" value="" type="password" class="form-control" id="password"
+                                       placeholder="Password" required>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="rePassword" class="col-sm-3 control-label">Подтверждение пароля: </label>
+                            <div class="col-sm-8">
+                                <input name="rePassword" value="" type="password" class="form-control"
+                                       id="rePassword"
+                                       placeholder="Re-enter password" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-offset-3 col-sm-6 text-center">
+                        <button name="btnReg" type="submit" class="btn btn-primary btn-lg">Регистрация</button>
+                        <button name="btnReset" type="reset" class="btn btn-primary btn-lg">Сброс</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/fragments/footer.html"></div>
+
+<!-- jQuery -->
+<script type="text/javascript" th:src="@{/static/vendor/jquery/jquery-3.1.1.min.js}"></script>
+<!--Bootstrap scripts-->
+<script type="text/javascript" th:src="@{/static/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<!-- OwlCarousal2 -->
+<script type="text/javascript" th:src="@{/static/vendor/owlcarousel/owl.carousel.min.js}"></script>
+<!-- Custom scripts -->
+<script type="text/javascript" th:src="@{/static/js/app.js}"></script>
+
+</body>
+</html>

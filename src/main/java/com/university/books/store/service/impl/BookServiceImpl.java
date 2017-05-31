@@ -81,4 +81,10 @@ public class BookServiceImpl implements BookService {
         int count=bookDAO.countAllBooks();
         return count;
     }
+
+    @Override
+    public int countAllBooksByFilter(BookFilter filter) {
+        int count=bookDAO.countAllBooksByFilter(filter);
+        return count;
+    }
 }

@@ -34,7 +34,7 @@ public class DiscountDAOImpl extends AbstractDao<Long,DiscountEntity> implements
     @Override
     public List<DiscountEntity> findNewestDiscounts(int begPos, int limit) {
         Criteria criteria = createEntityCriteria();
-        criteria.addOrder(Order.desc("start_date"))
+        criteria.addOrder(Order.desc("startDate"))
                 .setFirstResult(begPos)
                 .setMaxResults(limit)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

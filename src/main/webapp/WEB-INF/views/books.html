@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap.min.css}"
+          href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap-theme.min.css}"
+          href="static/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Jquery-ui-1.12.1.custom -->
+    <link th:href="@{/static/vendor/jquery-ui-1.12.1.custom/css/jquery-ui.min.css}"
+          href="vendor/jquery-ui-1.12.1.custom/css/jquery-ui.min.css" rel="stylesheet">
+    <link th:href="@{/static/vendor/jquery-ui-1.12.1.custom/css/jquery-ui.structure.min.css}"
+          href="vendor/jquery-ui-1.12.1.custom/css/jquery-ui.structure.min.css" rel="stylesheet">
+    <link th:href="@{/static/vendor/jquery-ui-1.12.1.custom/css/jquery-ui.theme.min.css}"
+          href="vendor/jquery-ui-1.12.1.custom/css/jquery-ui.theme.min.css" rel="stylesheet">
+    <!-- Font-awesome -->
+    <link th:href="@{/static/vendor/font-awesome/css/font-awesome.min.css}"
+          href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- OwlCarusel2 -->
+    <link rel="stylesheet" th:href="@{/static/vendor/owlcarousel/assets/owl.carousel.min.css}"
+          href="static/vendor/owlcarousel/assets/owl.carousel.min.css">
+    <link rel="stylesheet" th:href="@{/static/vendor/owlcarousel/assets/owl.theme.default.min.css}"
+          href="static/vendor/owlcarousel/assets/owl.theme.default.min.css">
+    <!-- Custom styles -->
+    <link th:href="@{/static/css/books.css}" href="static/css/books.css" rel="stylesheet" type="text/css">
+    <link th:href="@{/static/css/bootstrap-overrides.css}" href="static/css/bootstrap-overrides.css" rel="stylesheet"
+          type="text/css">
+</head>
+<body>
+
+<div th:replace="/fragments/toolbar.html"></div>
+
+<div class="container bs-breadcrumb">
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#" th:href="@{/}">BooksStore.com</a></li>
+                <li><a href="#" th:href="@{/}" th:text="${url}">BooksStore.com</a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="container filter-offset">
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <h2>Books</h2>
+        </div>
+    </div>
+    <div class="row text-center options">
+        <div class="col-sm-4">
+            <div class="btn-group">
+                <a class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
+                    <h2><span th:text="${currentCategoryName}"> Категории </span> <span class="caret"></span></h2>
+                </a>
+
+                <ul class="dropdown-menu scrollable-menu">
+                    <li>
+                        <a href="#1" th:href="@{/books/{catId}page/{numPage}(catId=${0+'/'},numPage=${1}+'/')}">
+                            <h4>Все книги</h4>
+                        </a>
+                    </li>
+                    <li th:each="categ:${categories}">
+                        <a href="#1"
+                           th:href="@{/books/{catId}page/{numPage}(catId=${categ.categoryId+'/'},numPage=${1}+'/')}">
+                            <h4 th:text="${categ.name}">1</h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <a class="" role="button" data-toggle="collapse" href="#filters" aria-expanded="false"
+               aria-controls="collapseExample">
+                <h2>Фильтры</h2>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a class="" role="button" data-toggle="collapse" href="#search" aria-expanded="false"
+               aria-controls="collapseExample">
+                <h2>Поиск</h2>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="collapse" id="search">
+                <div class="row">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <form class="form-horizontal" action="#">
+                            <div class="input-group input-group-lg">
+                                <input name="keyword" value="" type="text" class="form-control"
+                                       placeholder="Поиск...">
+                                <span class="input-group-btn">
+                                    <button name="search" class="btn btn-default" type="submit">Поиск</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="collapse" id="filters">
+                <div class="row text-center">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <form action="#">
+                                        <div class="col-sm-3">
+                                            <input name="minPrice" type="number" class="form-control" readonly>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input name="maxPrice" type="number" class="form-control" readonly>
+                                        </div>
+                                    </form>
+
+                                    <div class="col-sm-6">
+                                        <div class="btn-group">
+                                            <a class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false">
+                                                <h3 th:text="${!#strings.isEmpty(order)? mapOrders[order]:'Упорядочить'}">Упорядочить <span class="caret"></span></h3>
+                                            </a>
+
+                                            <ul class="dropdown-menu scrollable-menu">
+                                                <li th:each="ord:${mapOrders}">
+                                                    <a href="#1" th:href="@{/books/{catId}page/{numPage}{urlPrice}{urlOrder}(catId=${currentCategory+'/'},numPage='1/', urlPrice=${#strings.isEmpty(price)?'':'price/'+price+'/'},urlOrder='order/'+${ord.key+'/'})}">
+                                                        <h4 th:text="${ord.value}">1</h4>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div id="slider-range"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col-sm-6 col-lg-4 item-catalog-fix-size" th:each="book:${books}">
+            <img class="img-thumbnail img-catalog-fix-size" src="http://placehold.it/300x400"
+                 th:src="@{/static/images/books/{img}(img=${book.isbn}+'/1.jpg')}">
+            <h5 th:text="${book.title}">Nulla At Nulla Justo, Eget</h5>
+            <p th:text="${#numbers.formatCurrency(book.price)}">$400</p>
+            <a href="#" class="button expanded" th:href="@{/book/{id}/(id=${book.bookId})}">Купить</a>
+        </div>
+    </div>
+</div>
+
+<p th:text="${#strings.isEmpty(price)?'':'price/'+price+'/'}"></p>
+<p th:text="${#strings.isEmpty(order)?'':'order/'+order+'/'}">
+
+<div class="container">
+    <div class="row text-center">
+        <ul class="pagination" th:with="urlExt=${#strings.isEmpty(price)?'':'price/'+price+'/' + #strings.isEmpty(order)?'':'order/'+order+'/'}">
+            <li><a href="#" aria-label="Previous"
+                   th:href="@{/books/{catId}page/{numPage}{urlEnd}(catId=${currentCategory+'/'}, numPage=${currentPage!=1?(currentPage-1)+'/':currentPage+'/'}, urlEnd=${urlExt})}"><span th:text="${urlExt}"
+                    aria-hidden="true">&laquo;</span></a></li>
+            <li><a href="#" aria-label="Previous"
+                   th:href="@{/books/{catId}page/{numPage}{urlEnd}(catId=${currentCategory+'/'}, numPage=${currentPage!=1?(currentPage-1)+'/':currentPage+'/'}, urlEnd=${urlExt})}"><span
+                    aria-hidden="true">&laquo;</span></a></li>
+            <li th:classappend="${currentPage==1? 'active':''}"><a href="#"
+                                                                   th:href="@{/books/{catId}page/{numPage}{urlEnd}(catId=${currentCategory+'/'}, numPage='1/',urlEnd=${urlExt})}">
+                <span>1</span> <span class="sr-only">(current)</span></a></li>
+            <li><a th:hidden="${currentPage<=3}" href="#"><span>...</span> <span class="sr-only">(current)</span></a>
+            </li>
+            <li><a th:hidden="${currentPage<3}" href="#"
+                   th:href="@{/books/{catId}page/{numPage}{urlEnd}(catId=${currentCategory+'/'},numPage=${currentPage-1}+'/', urlEnd=${urlExt})}"><span
+                    th:text="${currentPage-1}">3</span> <span class="sr-only">(current)</span></a></li>
+            <li th:classappend="${currentPage!=1 and currentPage!=countPages? 'active':''}"><a
+                    th:hidden="${currentPage==1 or currentPage==countPages}" href="#"
+                    th:href="@{/books/{catId}page/{numPage}{urlEnd}(catId=${currentCategory+'/'},numPage=${currentPage}+'/', urlEnd=${urlExt})}"><span
+                    th:text="${currentPage}">4</span> <span class="sr-only">(current)</span></a></li>
+            <li><a th:hidden="${countPages-currentPage<=1}" href="#"
+                   th:href="@{/books/{catId}page/{numPage}{urlEnd}(catId=${currentCategory+'/'},numPage=${currentPage+1}+'/', urlEnd=${urlExt})}"><span
+                    th:text="${currentPage+1}">5</span> <span class="sr-only">(current)</span></a></li>
+            <li><a th:hidden="${countPages-currentPage<=2}" href="#"><span>...</span> <span
+                    class="sr-only">(current)</span></a></li>
+            <li th:classappend="${currentPage==countPages? 'active':''}"><a th:hidden="${countPages<2}" href="#"
+                                                                            th:href="@{/books/{catId}page/{numPage}{urlEnd}(catId=${currentCategory+'/'},numPage=${countPages}+'/', urlEnd=${urlExt})}"><span
+                    th:text="${countPages}">7</span> <span class="sr-only">(current)</span></a></li>
+            <li><a href="#" aria-label=""
+                   th:href="@{/books/{catId}page/{numPage}{urlEnd}(catId=${currentCategory+'/'},numPage=${currentPage<countPages?(currentPage+1)+'/': currentPage+'/'}, urlEnd=${urlExt})}"><span
+                    aria-hidden="true">&raquo;</span></a></li>
+        </ul>
+    </div>
+</div>
+
+<div th:replace="/fragments/footer.html"></div>
+
+<!-- jQuery -->
+<script type="text/javascript" th:src="@{/static/vendor/jquery/jquery-3.1.1.min.js}"></script>
+<!--Bootstrap scripts-->
+<script type="text/javascript" th:src="@{/static/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<!-- Jquery-ui-1.12.1.custom -->
+<script src="vendor/jquery-ui-1.12.1.custom/js/jquery-ui.min.js"
+        th:src="@{/static/vendor/jquery-ui-1.12.1.custom/js/jquery-ui.min.js}"></script>
+<!-- OwlCarousal2 -->
+<script type="text/javascript" th:src="@{/static/vendor/owlcarousel/owl.carousel.min.js}"></script>
+<!-- Custom scripts -->
+<script type="text/javascript" th:src="@{/static/js/app.js}"></script>
+
+</body>
+</html>

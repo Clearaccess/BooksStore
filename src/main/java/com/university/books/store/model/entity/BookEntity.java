@@ -26,7 +26,7 @@ public class BookEntity {
     private String ageLimit;
     private String series;
     private String cover;
-    private String release_date;
+    private String releaseDate;
     private double price;
     private String description;
     private CategoryEntity category;
@@ -169,11 +169,11 @@ public class BookEntity {
     @Basic
     @Column(name = "release_date", nullable = true, length = 50)
     public String getReleaseDate() {
-        return release_date;
+        return releaseDate;
     }
 
-    public void setReleaseDate(String release) {
-        this.release_date = release_date;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     @Basic
@@ -227,7 +227,7 @@ public class BookEntity {
         this.orderDetails = orderDetails;
     }
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     public Collection<ReviewEntity> getReviews() {
         return reviews;
@@ -271,7 +271,7 @@ public class BookEntity {
         if (ageLimit != null ? !ageLimit.equals(that.ageLimit) : that.ageLimit != null) return false;
         if (series != null ? !series.equals(that.series) : that.series != null) return false;
         if (cover != null ? !cover.equals(that.cover) : that.cover != null) return false;
-        if (release_date != null ? !release_date.equals(that.release_date) : that.release_date != null) return false;
+        if (releaseDate != null ? !releaseDate.equals(that.releaseDate) : that.releaseDate != null) return false;
 
         return true;
     }
@@ -291,7 +291,7 @@ public class BookEntity {
         result = 31 * result + (ageLimit != null ? ageLimit.hashCode() : 0);
         result = 31 * result + (series != null ? series.hashCode() : 0);
         result = 31 * result + (cover != null ? cover.hashCode() : 0);
-        result = 31 * result + (release_date != null ? release_date.hashCode() : 0);
+        result = 31 * result + (releaseDate != null ? releaseDate.hashCode() : 0);
         result = 31 * result + (int) (category.getCategoryId() ^ (category.getCategoryId() >>> 32));
         return result;
     }

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books Store</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap.min.css}"
+          href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap-theme.min.css}"
+          href="static/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Font-awesome -->
+    <link th:href="@{/static/vendor/font-awesome/css/font-awesome.min.css}"
+          href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- OwlCarusel2 -->
+    <link th:href="@{/static/vendor/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet"
+          href="static/vendor/owlcarousel/assets/owl.carousel.min.css">
+    <link th:href="@{/static/vendor/owlcarousel/assets/owl.theme.default.min.css}" rel="stylesheet"
+          href="static/vendor/owlcarousel/assets/owl.theme.default.min.css">
+    <!-- Custom styles -->
+    <link th:href="@{/static/css/home.css}" href="static/css/home.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div th:replace="/fragments/toolbar.html"></div>
+
+<section id="slider"><!--slider-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="slider-carousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li th:each="sbook, ind:${saleBooks}" th:class="${ind.first}? 'active'" data-target="#slider-carousel" data-slide-to="${ind.index}"></li>
+                    </ol>
+
+                    <div class="carousel-inner">
+                        <div th:each="sbook, ind:${saleBooks}" th:classappend="${ind.first}? 'active'" class="item item-sale-fix-size">
+                            <form action="#" th:action="@{/book/{id}/(id=${sbook.bookId})}">
+                                <div class="col-sm-6">
+                                    <h1 th:text="${sbook.title}">Books Store</h1>
+                                    <h2>Скидка</h2>
+                                    <p th:text="${#strings.abbreviate(sbook.description,300)}">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. </p>
+                                    <button type="submit" class="btn btn-default get">Получить сейчас</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <img th:src="@{/static/images/books/{img}(img=${sbook.isbn+ '/1.jpg'})}" class="girl img-responsive" alt=""/>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section><!--/slider-->
+
+<div class="container">
+
+    <!-- Popular books -->
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-5 text-left">
+            <h3>Популярные книги</h3>
+        </div>
+        <div class="col-sm-offset-4 col-sm-2">
+            <div class="owl-theme">
+                <div class="owl-nav">
+                    <div class="owl-prev bs-prev-popular">prev</div>
+                    <div class="owl-next bs-next-popular">next</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="owl-carousel owl-theme owl-loaded bs-carousel-popular">
+            <div th:each="book, ind: ${popularBooks}" class="item item-main-fix-size text-center">
+                <img class="img-thumbnail" th:src="@{/static/images/books/{img}(img=${book.isbn+ '/1.jpg'})}">
+                <h5 th:text="${book.title}">Nulla At Nulla Justo, Eget</h5>
+                <p th:text="${#numbers.formatCurrency(book.price)}">R400</p>
+                <a th:href="@{/book/{id}/(id=${book.bookId})}" class="button expanded">Купить</a></div>
+        </div>
+    </div>
+
+    <!-- Newest books -->
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-5 text-left">
+            <h3>Новое поступление</h3>
+        </div>
+        <div class="col-sm-offset-4 col-sm-2">
+            <div class="owl-theme">
+                <div class="owl-nav">
+                    <div class="owl-prev bs-prev-newest">prev</div>
+                    <div class="owl-next bs-next-newest">next</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="owl-carousel owl-theme owl-loaded bs-carousel-newest">
+            <div th:each="book, ind: ${newestBooks}" class="item item-main-fix-size text-center">
+                <img class="img-thumbnail" th:src="@{/static/images/books/{img}(img=${book.isbn+ '/1.jpg'})}">
+            <h5 th:text="${book.title}">Nulla At Nulla Justo, Eget</h5>
+            <p th:text="${#numbers.formatCurrency(book.price)}">$400</p>
+            <a th:href="@{/book/{id}/(id=${book.bookId})}" class="button expanded">Купить</a></div>
+        </div>
+    </div>
+
+    <!-- Favourite books -->
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-5 text-left">
+            <h3>Хит продаж</h3>
+        </div>
+        <div class="col-sm-offset-4 col-sm-2">
+            <div class="owl-theme">
+                <div class="owl-nav">
+                    <div class="owl-prev bs-prev-favourite">prev</div>
+                    <div class="owl-next bs-next-favourite">next</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="owl-carousel owl-theme owl-loaded bs-carousel-favourite">
+            <div th:each="book, ind: ${favouriteBooks}" class="item item-main-fix-size text-center">
+                <img class="img-thumbnail" th:src="@{/static/images/books/{img}(img=${book.isbn+ '/1.jpg'})}">
+                <h5 th:text="${book.title}">Nulla At Nulla Justo, Eget</h5>
+                <p th:text="${#numbers.formatCurrency(book.price)}">$400</p>
+                <a th:href="@{/book/{id}/(id=${book.bookId})}" class="button expanded">Купить</a></div>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="/fragments/footer.html"></div>
+
+<!-- jQuery -->
+<script type="text/javascript" th:src="@{/static/vendor/jquery/jquery-3.1.1.min.js}"></script>
+<!--Bootstrap scripts-->
+<script type="text/javascript" th:src="@{/static/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<!-- OwlCarousal2 -->
+<script type="text/javascript" th:src="@{/static/vendor/owlcarousel/owl.carousel.min.js}"></script>
+<!-- Custom scripts -->
+<script type="text/javascript" th:src="@{/static/js/app.js}"></script>
+
+</body>
+</html>

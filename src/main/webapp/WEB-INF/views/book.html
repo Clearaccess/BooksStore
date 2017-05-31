@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap.min.css}"
+          href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap-theme.min.css}"
+          href="static/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- jQuery Bar Rating -->
+    <link rel="stylesheet" href="vendor/jquery-bar-rating-master/css/bootstrap-stars.css"
+          th:href="@{/static/vendor/jquery-bar-rating-master/css/bootstrap-stars.css}">
+    <!-- Font-awesome -->
+    <link th:href="@{/static/vendor/font-awesome/css/font-awesome.min.css}"
+          href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- OwlCarusel2 -->
+    <link th:href="@{/static/vendor/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet"
+          href="static/vendor/owlcarousel/assets/owl.carousel.min.css">
+    <link th:href="@{/static/vendor/owlcarousel/assets/owl.theme.default.min.css}" rel="stylesheet"
+          href="static/vendor/owlcarousel/assets/owl.theme.default.min.css">
+    <!-- Custom styles -->
+    <link th:href="@{/static/css/book.css}" href="static/css/book.css" rel="stylesheet" type="text/css">
+    <link th:href="@{/static/css/bootstrap-overrides.css}" href="static/css/bootstrap-overrides.css" rel="stylesheet"
+          type="text/css">
+</head>
+<body>
+
+<div th:replace="/fragments/toolbar.html"></div>
+
+<div class="container bs-breadcrumb">
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="#" th:href="@{/}">BooksStore.com</a></li>
+                <li><a href="#" th:href="@{/books/{catId}/page/{page}/(catId=${book.category.categoryId},page='1')}"
+                       th:text="${book.category.name}"></a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="container bs-book-header">
+    <div class="row bs-book-title">
+        <div class="col-sm-12 text-center">
+            <h2 th:text="${book.title}">Name book</h2>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-sm-6">
+            <img class="img-thumbnail img-producr-fix-size" src="http://placehold.it/300x400"
+                 th:src="@{/static/images/books/{img}(img=${book.isbn+'/1.jpg'})}">
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6 text-left">
+                    <div class="row" th:hidden="${book.author==null or #strings.isEmpty(book.author)}">
+                        <div class="col-sm-12"><h4>Автор:</h4></div>
+                    </div>
+                    <div class="row" th:hidden="${book.publisher==null or #strings.isEmpty(book.publisher)}">
+                        <div class="col-sm-12"><h4>Издательство:</h4></div>
+                    </div>
+                    <div class="row" th:hidden="${book.form==null or #strings.isEmpty(book.form)}">
+                        <div class="col-sm-12"><h4>Формат:</h4></div>
+                    </div>
+                    <div class="row" th:hidden="${book.pages==null or #strings.isEmpty(book.pages)}">
+                        <div class="col-sm-12"><h4>Количество странниц:</h4></div>
+                    </div>
+                    <div class="row" th:hidden="${book.releaseDate==null or #strings.isEmpty(book.releaseDate)}">
+                        <div class="col-sm-12"><h4>Год издания:</h4></div>
+                    </div>
+                    <div class="row" th:hidden="${book.isbn==null or #strings.isEmpty(book.isbn)}">
+                        <div class="col-sm-12"><h4>ISBN:</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>Цена:</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row" th:hidden="${book.author==null or #strings.isEmpty(book.author)}">
+                        <div class="col-sm-12"><h4 th:text="${book.author}">Author</h4></div>
+                    </div>
+                    <div class="row" th:hidden="${book.publisher==null or #strings.isEmpty(book.publisher)}">
+                        <div class="col-sm-12"><h4 th:text="${book.publisher}">Publisher</h4></div>
+                    </div>
+                    <div class="row" th:hidden="${book.form==null or #strings.isEmpty(book.form)}">
+                        <div class="col-sm-12"><h4 th:text="${book.form}"> 170x240 мм</h4></div>
+                    </div>
+                    <div class="row" th:hidden="${book.pages==null or #strings.isEmpty(book.pages)}">
+                        <div class="col-sm-12"><h4 th:text="${book.pages}">233</h4></div>
+                    </div>
+                    <div class="row" th:hidden="${book.releaseDate==null or #strings.isEmpty(book.releaseDate)}">
+                        <div class="col-sm-12"><h4 th:text="${book.releaseDate}">2017</h4></div>
+                    </div>
+                    <div class="row" th:hidden="${book.isbn==null or #strings.isEmpty(book.isbn)}">
+                        <div class="col-sm-12"><h4 th:text="${book.isbn}">978-5-9614-5955-5 </h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4><span th:text="${book.price}">560</span> <span class="glyphicon glyphicon-rub"></span>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row bs-book-control">
+                <form action="#">
+                    <div class="col-sm-6">
+                        <button name="buy" class="btn btn-primary btn-lg btn-block"> Купить</button>
+                    </div>
+                    <div class="col-sm-6 hidden">
+                        <button name="addBook" class="btn btn-warning btn-lg btn-block"> Добавить в список желаний
+                        </button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button name="delBook" class="btn btn-danger btn-lg btn-block"> Удалить из списка желаний
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container bs-description">
+    <div class="col-sm-12">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#description" data-toggle="tab">Описание</a></li>
+            <li><a href="#reviews" data-toggle="tab">Отзывы (<span th:text="${book.reviews.size()}">5</span>)</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="description">
+                <p class="bs-book-description" th:text="${book.description}">От издателя
+                    Книга представляет собой многолетний бестселлер, который обновлен с целью отражения функциональных
+                    средств, предлагаемых последней версией платформы Spring Framework 4. С выходом 4-го издания эта
+                    популярная книга безоговорочно считается наиболее исчерпывающим и авторитетным руководством по
+                    Spring.
+                    Вы изучите основы и ключевые темы, связанные с платформой Spring. Авторы поделятся с вами
+                    собственным
+                    реальным опытом в области удаленной обработки, использования Hibernate и работы с EJB. Помимо основ
+                    вы
+                    научитесь применять Spring Framework для построения разнообразных уровней или частей корпоративного
+                    Java-приложения: транзакций, веб-уровня и уровня презентаций, развертывания и многого другого.
+                    Многочисленные примеры помогут вам в освоении технологий и приемов, рассмотренных в этой книге, а
+                    также
+                    в организации их совместной работы. Устойчивая и легковесная платформа Spring Framework с открытым
+                    кодом
+                    продолжает быть де-факто лидирующей инфраструктурой для разработки корпоративных Java-приложений.
+                    Она
+                    тесно взаимодействует с другими Java-технологиями подобного рода, такими как Hibernate, Groovy,
+                    MyBatis
+                    и т.д. Теперь Spring работает также с Java EE и JPA 2. Прочитав эту книгу, вы научитесь с помощью
+                    Spring
+                    создавать сложные приложения от начала и до конца. В книге рассматриваются следующие темы
+                    Начало работы с платформой Spring Framework и ее новыми средствами
+                    Использование инверсии управления (IoC) и внедрения зависимостей (DI)
+                    Применение приемов аспектно-ориентированного программирования в Spring и понимание их важности
+                    Доступ и хранение данных с использованием Spring и Hibernate, MyBatis, JPA 2 и т.д.
+                    Построение механизмов транзакций для корпоративного приложения и применение средств промежуточного
+                    уровня в Spring
+                    Создание веб-приложений, основанных на Spring, с помощью Spring MVC и других инфраструктур
+                    Проектирование и построение клиентских приложений на основе Spring
+                    Работа с языками сценариев, такими как Groovy, в целях обеспечения расширенной функциональности для
+                    приложений
+
+
+                    Книга рассчитана на опытных Java-разработчиков, которые изучают Spring с самого начала или обладают
+                    поверхностным представлением о Spring Framework. Она ориентирована на тех, кто занимается или только
+                    планирует заняться разработкой корпоративных Java-приложений.
+                </p>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="reviews">
+                <div class="col-sm-12 bs-book-reviews">
+                    <input id="countViews" th:value="${book.reviews.size()}" hidden>
+                    <div class="panel panel-default" th:each="review, ind:${book.reviews}">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <ul class="list-inline text-left">
+                                        <li><select id="reviewRate" th:attrappend="id=${ind.index}">
+                                            <option value="1" th:selected="${review.rate==1}">1</option>
+                                            <option value="2" th:selected="${review.rate==2}">2</option>
+                                            <option value="3" th:selected="${review.rate==3}">3</option>
+                                            <option value="4" th:selected="${review.rate==4}">4</option>
+                                            <option value="5" th:selected="${review.rate==5}">5</option>
+                                        </select>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ul class="list-inline text-left">
+                                        <li class="text-center"><a href=""><i class="fa fa-user icon"></i><span th:text="${review.user.login}">EUGEN</span></a>
+                                        </li>
+                                        <li class="text-center"><a href=""><i class="fa fa-clock-o icon"></i><span
+                                                th:text="${#calendars.format(review.createDate,'h:mm a')}">12:41 PM</span></a>
+                                        </li>
+                                        <li class="text-center"><a href=""><i class="fa fa-calendar-o icon"></i><span
+                                                th:text="${#calendars.format(review.createDate,'d MMM YYYY')}">31 DEC 2014</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p th:text="${review.message}">Lorem ipsum dolor sit amet, consectetur adipisicing
+                                        elit,
+                                        sed do eiusmod tempor incididunt
+                                        ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud
+                                        exercitation
+                                        ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in
+                                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                        pariatur.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="#">
+                        <button name="newComment" type="button" class="btn btn-default btn-lg btn-block">Добавить
+                            комментарий
+                        </button>
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <textarea class="form-control" rows="4" name="message"></textarea>
+                                </br>
+                                <div class="col-sm-12">
+                                    <select name="rate" id="rate">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container bs-book-relatebooks">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6 text-left bs-book-relatebooks-header">
+                    <h3>Связанные книги</h3>
+                </div>
+                <div class="col-sm-offset-4 col-sm-2">
+                    <div class="owl-theme">
+                        <div class="owl-nav">
+                            <div class="owl-prev bs-prev-suggestion">prev</div>
+                            <div class="owl-next bs-next-suggestion">next</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="owl-carousel owl-theme owl-loaded bs-carousel-suggestion text-center">
+                        <div class="item" th:each="rBook:${relatedBooks}">
+                            <img class="img-thumbnail"
+                                 th:src="@{/static/images/books/{img}(img=${rBook.isbn+'/1.jpg'})}">
+                            <h5 th:text="${rBook.title}">Nulla At Nulla Justo, Eget</h5>
+                            <p th:text="${#numbers.formatCurrency(rBook.price)}">$400</p>
+                            <a href="#" class="button expanded" th:href="@{/book/{id}/(id=${rBook.bookId})}">Купить</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/fragments/footer.html"></div>
+
+<!-- jQuery -->
+<script th:src="@{/static/vendor/jquery/jquery-3.1.1.min.js}"></script>
+<!--Bootstrap scripts-->
+<script th:src="@{/static/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<!-- jQuery Bar Rating -->
+<script src="vendor/jquery-bar-rating-master/js/jquery.barrating.min.js"
+        th:src="@{/static/vendor/jquery-bar-rating-master/js/jquery.barrating.min.js}"></script>
+<!-- OwlCarousal2 -->
+<script th:src="@{/static/vendor/owlcarousel/owl.carousel.min.js}"></script>
+<!-- Custom scripts -->
+<script th:inline="javascript" th:src="@{/static/js/app.js}"></script>
+
+</body>
+</html>

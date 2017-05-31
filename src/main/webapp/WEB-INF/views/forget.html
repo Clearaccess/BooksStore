@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books Store</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap.min.css}"
+          href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/static/vendor/bootstrap/css/bootstrap-theme.min.css}"
+          href="static/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Font-awesome -->
+    <link th:href="@{/static/vendor/font-awesome/css/font-awesome.min.css}"
+          href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- OwlCarusel2 -->
+    <link th:href="@{/static/vendor/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet"
+          href="static/vendor/owlcarousel/assets/owl.carousel.min.css">
+    <link th:href="@{/static/vendor/owlcarousel/assets/owl.theme.default.min.css}" rel="stylesheet"
+          href="static/vendor/owlcarousel/assets/owl.theme.default.min.css">
+    <!-- Custom styles -->
+    <link th:href="@{/static/css/forget.css}" href="static/css/forget.css" rel="stylesheet" type="text/css">
+    <link th:href="@{/static/css/footer.css}" href="static/css/footer.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div th:replace="/fragments/toolbar.html"></div>
+
+<div class="container container-bottom">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="form-signin-heading form-title text-center">Восстановление пароля</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-4 col-sm-6">
+            <form class="form-inline" id="form" action="forget" th:action="@{/forget/}" method="POST">
+                    <div class="form-group">
+                        <label for="email">E-Mail:</label>
+                        <input id="email" name="email" type="text" class="form-control" placeholder="e-mail">
+                    </div>
+                    <button name="restore" type="submit" class="btn btn-default">Восстановить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/fragments/footer.html"></div>
+
+<!-- jQuery -->
+<script type="text/javascript" th:src="@{/static/vendor/jquery/jquery-3.1.1.min.js}"></script>
+<!--Bootstrap scripts-->
+<script type="text/javascript" th:src="@{/static/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<!-- OwlCarousal2 -->
+<script type="text/javascript" th:src="@{/static/vendor/owlcarousel/owl.carousel.min.js}"></script>
+<!-- Custom scripts -->
+<script type="text/javascript" th:src="@{/static/js/app.js}"></script>
+
+</body>
+</html>

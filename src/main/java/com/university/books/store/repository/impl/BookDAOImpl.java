@@ -49,23 +49,36 @@ public class BookDAOImpl extends AbstractDao<Long, BookEntity> implements BookDA
     public List<BookEntity> findAllMostPopularBooks(int begPos, int limit, BookFilter filter) {
         Criteria reviewCriteria = createEntityCriteria(ReviewEntity.class);
 
-        reviewCriteria = applyFilter(reviewCriteria, filter);
-
         reviewCriteria.setProjection(Projections.projectionList()
-                .add(Projections.sum("rate"))
-                .add(Projections.groupProperty("book_id")))
-                .addOrder(Order.desc("rate"))
+                .add(Projections.sum("rate"), "rt")
+                .add(Projections.groupProperty("book.bookId")))
+                .addOrder(Order.desc("rt"))
                 .setFirstResult(begPos)
-                .setMaxResults(limit)
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+                .setMaxResults(limit);
         List<Object[]> rates = reviewCriteria.list();
 
         List<BookEntity> books = new ArrayList<>();
 
+        int iteration = 0;
         for (Object[] rate : rates) {
+            iteration++;
+            System.out.println(rate[0] + " " + rate[1]);
             BookEntity book = findById((long) rate[1]);
-            books.add(book);
+            if ((filter.getMinPrice() <= book.getPrice() && book.getPrice() <= filter.getMaxPrice())
+                    &&
+                    (filter.getCategory() == 0 || book.getCategory().getCategoryId() == filter.getCategory())
+                    &&
+                    iteration >= begPos) {
+                books.add(book);
+            }
+
+            if (books.size() >= limit + begPos) {
+                break;
+            }
         }
+
+        System.out.println("GOOD! bookDAOImpl.findAllMostPopularBooks");
+        System.out.println("size result: " + books.size());
 
         return books;
     }
@@ -74,23 +87,36 @@ public class BookDAOImpl extends AbstractDao<Long, BookEntity> implements BookDA
     public List<BookEntity> findAllNoPopularBooks(int begPos, int limit, BookFilter filter) {
         Criteria reviewCriteria = createEntityCriteria(ReviewEntity.class);
 
-        reviewCriteria = applyFilter(reviewCriteria, filter);
-
         reviewCriteria.setProjection(Projections.projectionList()
-                .add(Projections.sum("rate"))
-                .add(Projections.groupProperty("book_id")))
-                .addOrder(Order.asc("rate"))
+                .add(Projections.sum("rate"), "rt")
+                .add(Projections.groupProperty("book.bookId")))
+                .addOrder(Order.asc("rt"))
                 .setFirstResult(begPos)
-                .setMaxResults(limit)
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+                .setMaxResults(limit);
         List<Object[]> rates = reviewCriteria.list();
 
         List<BookEntity> books = new ArrayList<>();
 
+        int iteration = 0;
         for (Object[] rate : rates) {
+            iteration++;
+            System.out.println(rate[0] + " " + rate[1]);
             BookEntity book = findById((long) rate[1]);
-            books.add(book);
+            if ((filter.getMinPrice() <= book.getPrice() && book.getPrice() <= filter.getMaxPrice())
+                    &&
+                    (filter.getCategory() == 0 || book.getCategory().getCategoryId() == filter.getCategory())
+                    &&
+                    iteration >= begPos) {
+                books.add(book);
+            }
+
+            if (books.size() >= limit + begPos) {
+                break;
+            }
         }
+
+        System.out.println("GOOD! bookDAOImpl.findAllNoPopularBooks");
+        System.out.println("size result: " + books.size());
 
         return books;
     }
@@ -98,7 +124,6 @@ public class BookDAOImpl extends AbstractDao<Long, BookEntity> implements BookDA
     @Override
     public List<BookEntity> findAllNewestDiscountBooks(int begPos, int limit) {
         List<DiscountEntity> discounts = discountDAO.findNewestDiscounts(begPos, limit);
-
         List<BookEntity> books = new ArrayList<>();
         for (DiscountEntity discount : discounts) {
             books.add(discount.getBook());
@@ -113,7 +138,7 @@ public class BookDAOImpl extends AbstractDao<Long, BookEntity> implements BookDA
 
         criteria = applyFilter(criteria, filter);
 
-        criteria.addOrder(Order.desc("release_date"))
+        criteria.addOrder(Order.desc("releaseDate"))
                 .setFirstResult(begPos)
                 .setMaxResults(limit)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -194,11 +219,21 @@ public class BookDAOImpl extends AbstractDao<Long, BookEntity> implements BookDA
         return count;
     }
 
+    @Override
+    public int countAllBooksByFilter(BookFilter filter) {
+        Criteria criteria = createEntityCriteria();
+        criteria = applyFilter(criteria, filter);
+        criteria.setProjection(Projections.rowCount());
+        System.out.println(criteria.list().get(0).getClass());
+        int count = ((Long) criteria.list().get(0)).intValue();
+        return count;
+    }
+
     protected Criteria applyFilter(Criteria criteria, BookFilter filter) {
         criteria.add(Restrictions.between("price", filter.getMinPrice(), filter.getMaxPrice()));
 
         if (filter.getCategory() != 0) {
-            criteria.add(Restrictions.eq("category_id", filter.getCategory()));
+            criteria.add(Restrictions.eq("category.categoryId", filter.getCategory()));
         }
 
         return criteria;

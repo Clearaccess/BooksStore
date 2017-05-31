@@ -1,0 +1,41 @@
+.bs-checkout-header{
+    margin-top: 5%;
+    margin-bottom: 2%;
+}
+
+footer {
+    margin-top: 25px;
+}
+
+footer .footer-above {
+    padding-top: 50px;
+    background-color: lightsteelblue;
+}
+footer .footer-below {
+    padding: 25px 0;
+    background-color: lightsteelblue;
+}
+.btn-outline {
+    color: white;
+    font-size: 20px;
+    border: solid 2px lightsteelblue;
+    background: transparent;
+    transition: all 0.3s ease-in-out;
+    margin-top: 15px;
+}
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline:active,
+.btn-outline.active {
+    color: lightsteelblue;
+    background: white;
+    border: solid 2px white;
+}
+
+.bs-checkout-header-pay{
+    margin-top: 5%;
+    margin-bottom: 2%;
+}
+
+
+

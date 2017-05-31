@@ -1,0 +1,18 @@
+<!-- Header -->
+<nav class="navbar navbar-default navbar-fixed-top header">
+    <div class="container">
+        <ul class="nav navbar-nav navbar-left">
+            <li><a th:href="@{/books/0/page/1/}">Книги</a></li>
+            <li><a th:href="@{/books/0/page/1/}">Бестселлеры</a></li>
+        </ul>
+
+        <ul class=" nav navbar-nav navbar-right">
+            <li><a th:href="@{/books/0/page/1/}">О нас</a></li>
+            <li><a th:href="@{/books/0/page/1/}">Поддержка</a></li>
+            <li><a th:href="@{/login/}">Вход</a></li>
+            <li><a th:href="@{/account/(userId)(userId=${1})}">Профиль</a></li>
+            <li><a th:href="@{/bag/}">Корзина</a></li>
+        </ul>
+    </div>
+</nav>
+<!-- End Header -->

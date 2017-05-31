@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface CategoryService {
     List<CategoryEntity> findAllCategories();
+
+    CategoryEntity findById(long id);
 }

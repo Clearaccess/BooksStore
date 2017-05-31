@@ -30,4 +30,6 @@ public interface BookService {
 
     public List<BookEntity> findAllCheapBooks(int begPos, int limit, BookFilter filter);
     public int countAllBooks();
+
+    public int countAllBooksByFilter(BookFilter filter);
 }

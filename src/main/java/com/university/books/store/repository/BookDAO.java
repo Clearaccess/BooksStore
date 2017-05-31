@@ -36,4 +36,6 @@ public interface BookDAO {
     void deleteById(long id);
 
     int countAllBooks();
+
+    int countAllBooksByFilter(BookFilter filter);
 }

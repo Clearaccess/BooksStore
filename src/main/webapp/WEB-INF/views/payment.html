@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <!-- Bootstrap -->
+    <link href="static/vendor/bootstrap/css/bootstrap.min.css"
+          th:href="@{/static/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="static/vendor/bootstrap/css/bootstrap-theme.min.css"
+          th:href="@{/static/vendor/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet">
+    <!-- Font-awesome -->
+    <link href="static/vendor/font-awesome/css/font-awesome.min.css"
+          th:href="@{/static/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+    <!-- OwlCarusel2 -->
+    <link rel="stylesheet" href="static/vendor/owlcarousel/assets/owl.carousel.min.css"
+          th:href="@{/static/vendor/owlcarousel/assets/owl.carousel.min.css}">
+    <link rel="stylesheet" href="static/vendor/owlcarousel/assets/owl.theme.default.min.css"
+          th:href="@{/static/vendor/owlcarousel/assets/owl.theme.default.min.css}">
+    <!-- Custom styles -->
+    <link href="static/css/account.css" th:href="@{/static/css/account.css}" rel="stylesheet" type="text/css">
+    <link href="static/css/bootstrap-overrides.css" th:href="@{/static/css/bootstrap-overrides.css}" rel="stylesheet"
+          type="text/css">
+</head>
+<body>
+
+<!-- <div th:replace="/fragments/toolbar.html"></div>-->
+
+<form action="#" th:action="" method="POST">
+    <div id="dropin-container"></div>
+    <input hidden name="nonceFromTheClient" value="">
+    <button id="submit-button">Request payment method</button>
+</form>
+
+<div th:replace="/fragments/footer.html"></div>
+
+<!-- jQuery -->
+<script src="static/vendor/jquery/jquery-3.1.1.min.js" th:src="@{/static/vendor/jquery/jquery-3.1.1.min.js}"></script>
+<!--Bootstrap scripts-->
+<script src="static/vendor/bootstrap/js/bootstrap.min.js"
+        th:src="@{/static/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<!-- OwlCarousal2 -->
+<script src="static/vendor/owlcarousel/owl.carousel.min.js"
+        th:src="@{/static/vendor/owlcarousel/owl.carousel.min.js}"></script>
+<!-- Custom scripts -->
+<script src="static/js/app.js" th:src="@{/static/js/app.js}"></script>
+<script src="https://js.braintreegateway.com/web/dropin/1.1.0/js/dropin.min.js"
+        th:src="@{https://js.braintreegateway.com/web/dropin/1.1.0/js/dropin.min.js}"></script>
+
+<script th:inline="javascript">
+    var submitButton = document.querySelector('#submit-button');
+
+    braintree.dropin.create({
+        authorization: [[${clientToken}]],
+        selector: '#dropin-container',
+        locale: 'ru_RU',
+        paypal: {
+            flow: 'checkout',
+            amount: '10.00',
+            currency: 'RU'
+        }
+    }, function (err, dropinInstance) {
+        if (err) {
+            // Handle any errors that might've occurred when creating Drop-in
+            console.error(err);
+            return;
+        }
+        submitButton.addEventListener('click', function () {
+            dropinInstance.requestPaymentMethod(function (err, payload) {
+                if (err) {
+                    // Handle errors in requesting payment method
+                }
+
+                console.log(payload.nonce);
+
+                $("input[name='nonceFromTheClient']").val(payload.nonce);
+                // Send payload.nonce to your server
+                $.ajax({
+                    url: "http://localhost:8080/checkout",
+                    data: payload.nonce,
+                    type: "POST",
+                    dataType: "html",
+                })
+                    .done(function (data, status, jqxhr) {
+                        console.log("SUCCESS: checkout\n");
+                    })
+                    .fail(function (data, status, jqxhr) {
+                        console.log("ERROR: checkout");
+                    });
+            });
+        });
+    });
+    /*
+     $.ajax({
+     url: "http://localhost:8080/clientToken",
+     type: "POST",
+     dataType: "html",
+     })
+     .done(function (data, status, jqxhr) {
+     console.log(data);
+     braintree.dropin.create({
+     authorization: data,
+     selector: '#dropin-container',
+     locale: 'ru_RU',
+     paypal: {
+     flow: 'checkout',
+     amount: '10.00',
+     currency: 'RU'
+     }
+     }, function (err, dropinInstance) {
+     if (err) {
+     // Handle any errors that might've occurred when creating Drop-in
+     console.error(err);
+     return;
+     }
+     submitButton.addEventListener('click', function () {
+     dropinInstance.requestPaymentMethod(function (err, payload) {
+     if (err) {
+     // Handle errors in requesting payment method
+     }
+
+     console.log(payload.nonce);
+
+     // Send payload.nonce to your server
+     $.ajax({
+     url: "http://localhost:8080/checkout",
+     data: payload.nonce,
+     type: "POST",
+     dataType: "html",
+     })
+     .done(function (data, status, jqxhr) {
+     console.log("SUCCESS: checkout\n");
+     })
+     .fail(function (data, status, jqxhr) {
+     console.log("ERROR: checkout");
+     });
+     });
+     });
+     });
+     })
+     .fail(function (data, status, jqxhr) {
+     console.log("ERROR: No gget client token");
+     });
+     */
+    /*
+     braintree.dropin.create({
+     authorization: clientAuthorization(),
+     container: '#dropin-container'
+     }, function (err, dropinInstance) {
+     submitButton.addEventListener('click', function () {
+     dropinInstance.requestPaymentMethod(function (err, payload) {
+     // Send payload.nonce to your server.
+     $.ajax({
+     url: "http://localhost:8080/checkout",
+     type: "POST",
+     dataType: "html",
+     })
+     .done(function (data, status, jqxhr) {
+     console.log("SUCCESS: checkout");
+     })
+     .fail(function (data, status, jqxhr) {
+     console.log("ERROR: checkout");
+     });
+     });
+     });
+
+     if (dropinInstance.isPaymentMethodRequestable()) {
+     // This will be true if you generated the client token
+     // with a customer ID and there is a saved payment method
+     // available to tokenize with that customer.
+     submitButton.removeAttribute('disabled');
+     }
+
+     dropinInstance.on('paymentMethodRequestable', function (event) {
+     console.log(event.type); // The type of Payment Method, e.g 'CreditCard', 'PayPalAccount'.
+
+     submitButton.removeAttribute('disabled');
+     });
+
+     dropinInstance.on('noPaymentMethodRequestable', function () {
+     submitButton.setAttribute('disabled', true);
+     });
+     });*/
+</script>
+
+</body>
+</html>
