@@ -28,6 +28,7 @@ public class BookEntity {
     private String cover;
     private String releaseDate;
     private double price;
+    private int rate;
     private String description;
     private CategoryEntity category;
     private Collection<DiscountEntity> discounts;
@@ -194,6 +195,16 @@ public class BookEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Basic
+    @Column(name = "rate", nullable = false)
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
     }
 
     @ManyToOne

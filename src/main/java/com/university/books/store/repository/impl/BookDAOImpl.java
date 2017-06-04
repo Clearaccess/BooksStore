@@ -47,35 +47,14 @@ public class BookDAOImpl extends AbstractDao<Long, BookEntity> implements BookDA
 
     @Override
     public List<BookEntity> findAllMostPopularBooks(int begPos, int limit, BookFilter filter) {
-        Criteria reviewCriteria = createEntityCriteria(ReviewEntity.class);
+        Criteria criteria = createEntityCriteria();
+        criteria=applyFilter(criteria,filter);
 
-        reviewCriteria.setProjection(Projections.projectionList()
-                .add(Projections.sum("rate"), "rt")
-                .add(Projections.groupProperty("book.bookId")))
-                .addOrder(Order.desc("rt"))
+        criteria.addOrder(Order.desc("rate"))
                 .setFirstResult(begPos)
                 .setMaxResults(limit);
-        List<Object[]> rates = reviewCriteria.list();
 
-        List<BookEntity> books = new ArrayList<>();
-
-        int iteration = 0;
-        for (Object[] rate : rates) {
-            iteration++;
-            System.out.println(rate[0] + " " + rate[1]);
-            BookEntity book = findById((long) rate[1]);
-            if ((filter.getMinPrice() <= book.getPrice() && book.getPrice() <= filter.getMaxPrice())
-                    &&
-                    (filter.getCategory() == 0 || book.getCategory().getCategoryId() == filter.getCategory())
-                    &&
-                    iteration >= begPos) {
-                books.add(book);
-            }
-
-            if (books.size() >= limit + begPos) {
-                break;
-            }
-        }
+        List<BookEntity> books = (List<BookEntity>)criteria.list();
 
         System.out.println("GOOD! bookDAOImpl.findAllMostPopularBooks");
         System.out.println("size result: " + books.size());
@@ -85,37 +64,16 @@ public class BookDAOImpl extends AbstractDao<Long, BookEntity> implements BookDA
 
     @Override
     public List<BookEntity> findAllNoPopularBooks(int begPos, int limit, BookFilter filter) {
-        Criteria reviewCriteria = createEntityCriteria(ReviewEntity.class);
+        Criteria criteria = createEntityCriteria();
+        criteria=applyFilter(criteria,filter);
 
-        reviewCriteria.setProjection(Projections.projectionList()
-                .add(Projections.sum("rate"), "rt")
-                .add(Projections.groupProperty("book.bookId")))
-                .addOrder(Order.asc("rt"))
+        criteria.addOrder(Order.asc("rate"))
                 .setFirstResult(begPos)
                 .setMaxResults(limit);
-        List<Object[]> rates = reviewCriteria.list();
 
-        List<BookEntity> books = new ArrayList<>();
+        List<BookEntity> books = (List<BookEntity>)criteria.list();
 
-        int iteration = 0;
-        for (Object[] rate : rates) {
-            iteration++;
-            System.out.println(rate[0] + " " + rate[1]);
-            BookEntity book = findById((long) rate[1]);
-            if ((filter.getMinPrice() <= book.getPrice() && book.getPrice() <= filter.getMaxPrice())
-                    &&
-                    (filter.getCategory() == 0 || book.getCategory().getCategoryId() == filter.getCategory())
-                    &&
-                    iteration >= begPos) {
-                books.add(book);
-            }
-
-            if (books.size() >= limit + begPos) {
-                break;
-            }
-        }
-
-        System.out.println("GOOD! bookDAOImpl.findAllNoPopularBooks");
+        System.out.println("GOOD! bookDAOImpl.findAllMostPopularBooks");
         System.out.println("size result: " + books.size());
 
         return books;
@@ -228,6 +186,17 @@ public class BookDAOImpl extends AbstractDao<Long, BookEntity> implements BookDA
         int count = ((Long) criteria.list().get(0)).intValue();
         return count;
     }
+
+    @Override
+    public double maxPriceBooksByCategoryId(long categoryId) {
+        Criteria criteria = createEntityCriteria();
+        criteria=applyFilter(criteria,new BookFilter().setCategory(categoryId));
+        criteria.setProjection(Projections.max("price"));
+        System.out.println(criteria.list().get(0).getClass());
+        double maxPrice = ((Double) criteria.list().get(0)).doubleValue();
+        return maxPrice;
+    }
+
 
     protected Criteria applyFilter(Criteria criteria, BookFilter filter) {
         criteria.add(Restrictions.between("price", filter.getMinPrice(), filter.getMaxPrice()));

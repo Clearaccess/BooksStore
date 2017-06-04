@@ -126,21 +126,57 @@
 
         //Rangle slider
         $(function () {
+            console.log("Limit price: "+$("#limitPrice").val());
+            console.log("Min price: "+$("[name='minPrice']").val());
+            console.log("Max price: "+$("[name='maxPrice']").val());
+
             $("#slider-range").slider({
                 range: true,
                 min: 0,
-                max: 500,
-                values: [0, 500],
+                max: $("#limitPrice").val(),
+                values: [$("[name='minPrice']").val(), $("[name='maxPrice']").val()],
                 slide: function (event, ui) {
                     $("[name='minPrice']").val($("#slider-range").slider("values", 0));
                     $("[name='maxPrice']").val($("#slider-range").slider("values", 1));
                 },
                 create: function (event, ui) {
-                    $("[name='minPrice']").val($("#slider-range").slider("values", 0));
-                    $("[name='maxPrice']").val($("#slider-range").slider("values", 1));
+                    //$("[name='minPrice']").val($("#slider-range").slider("values", 0));
+                    //$("[name='maxPrice']").val($("#slider-range").slider("values", 1));
                 },
                 stop: function(event, ui) {
-                    console.log("STOP");
+                    var url=$('#formPrice').attr("action");
+                    var val1=$("[name='minPrice']").val();
+                    var val2=$("[name='maxPrice']").val();
+
+                    var price=/\/price\/[\d]+-[\d]+\//;
+                    var order=/\/order\/[\d]+\//;
+                    var page=/\/page\/[\d]+\//;
+                    var book=/\/books\/[\d]+\//;
+
+                    var targetUrl="";
+                    console.log(url);
+                    console.log(price.test(url));
+                    console.log(order.test(url));
+                    console.log(book.test(url));
+
+                    if(book.test(url)){
+                        targetUrl+=book.exec(url)[0]+"page/1/";
+                    }
+
+                    /*
+                    if(price.test(url)){
+                        targetUrl+=price.exec(url)[0].substring(1);
+                    }*/
+
+                    targetUrl+="price/"+val1+"-"+val2+"/";
+
+                    console.log(targetUrl);
+                    if(order.test(url)){
+                        targetUrl+=order.exec(url)[0].substring(1);
+                    }
+                    console.log(targetUrl);
+                    $('#formPrice').attr("action",targetUrl);
+                    $('#formPrice').submit();
                 }
             });
         });

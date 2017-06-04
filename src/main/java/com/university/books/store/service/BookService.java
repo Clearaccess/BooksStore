@@ -32,4 +32,6 @@ public interface BookService {
     public int countAllBooks();
 
     public int countAllBooksByFilter(BookFilter filter);
+
+    public double maxPriceBooksByCategoryId(long categoryId);
 }

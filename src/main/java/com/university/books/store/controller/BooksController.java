@@ -21,6 +21,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -66,25 +67,34 @@ public class BooksController {
     @Qualifier("userService")
     UserService userService;
 
-    //Books controller
-    @RequestMapping(value = {"/books/{id}/page/{page}/", "/books/{id}/page/{page}/order/{orderId}/", "/books/{id}/page/{page}/price/{priceId}/", "/books/{id}/page/{page}/price/{priceId}/order/{orderId}/"}, method = RequestMethod.GET)
-    public String booksPage(HttpServletRequest req, ModelMap model,
-                            @PathVariable(value = "id") int categoryId,
-                            @PathVariable(value = "page") int page,
-                            @RequestParam(value = "priceId", defaultValue = "") String price,
-                            @RequestParam(value = "orderId", defaultValue = "") String order) {
+    private final String MIN="0";
+    private final String MAX="10000";
 
-        String categoryName = "Все книги";
-        if (categoryId != 0) {
-            categoryName = categoryService.findById(categoryId).getName();
-        }
+    //Books controller
+
+    @RequestMapping(value = {"/books/{id}/page/{page}/"
+            , "/books/{id}/page/{page}/order/{order}/"
+            , "/books/{id}/page/{page}/price/{price}/"
+            , "/books/{id}/page/{page}/price/{price}/order/{order}/"}, method = {RequestMethod.GET,RequestMethod.POST})
+    public String booksPage(HttpServletRequest req, ModelMap model,
+                            @PathVariable(value = "id") Integer categoryId,
+                            @PathVariable(value = "page") Integer page,
+                            @PathVariable(value = "order", required = false) Integer order,
+                            @PathVariable(value = "price", required = false) String price,
+                            @RequestParam(name = "minPrice", defaultValue = MIN) Integer minPrice,
+                            @RequestParam(name = "maxPrice", defaultValue = MAX) Integer maxPrice) {
+
+        String categoryName = getNameCategory(categoryId);
         List<CategoryEntity> categories = categoryService.findAllCategories();
+
+        int limitPrice=(int)Math.ceil(bookService.maxPriceBooksByCategoryId(categoryId));
+        minPrice=getMinPrice(price,minPrice);
+        maxPrice=getMaxPrice(price,limitPrice);
 
         BookFilter bookFilter = initBooksFilter(categoryId,price);
         int countBooks = calculateBooks(bookFilter);
         int limit = 12;
         int countPages = countBooks / limit + (countBooks % limit != 0 ? 1 : 0);
-
 
         List<BookEntity> books = getBooks((page - 1) * limit, limit, bookFilter, order);
 
@@ -97,15 +107,23 @@ public class BooksController {
         model.addAttribute("currentCategory", categoryId);
         model.addAttribute("currentCategoryName", categoryName);
         model.addAttribute("order", order);
+        model.addAttribute("price", renderPrice(minPrice,maxPrice,limitPrice));
+        model.addAttribute("minPrice", minPrice);
+        model.addAttribute("maxPrice", maxPrice);
+        model.addAttribute("limitPrice", limitPrice);
         model.addAttribute("mapOrders", OrderMap.orders);
 
         System.out.println("Page: " + page);
         System.out.println("Category: " + categoryId);
-        System.out.println("Order: "+order);
-        System.out.println("Price: "+price);
+        System.out.println("Order: " + order);
+        System.out.println("Price: " + renderPrice(minPrice,maxPrice, limitPrice));
+        System.out.println("MinPrice: " + minPrice);
+        System.out.println("MaxPrice: " + maxPrice);
         System.out.println(req.getRequestURI());
         return "books";
     }
+
+
 
     //Book controller
     @RequestMapping(value = {"/book/{id}/"}, method = RequestMethod.GET)
@@ -127,7 +145,7 @@ public class BooksController {
         BookFilter filter = new BookFilter();
 
         filter.setCategory(categoryId);
-        if (!price.isEmpty()) {
+        if (price!=null) {
             String[] prices = price.split("-");
             filter.setMinPrice(Integer.parseInt(prices[0]))
                     .setMaxPrice(Integer.parseInt(prices[1]));
@@ -136,14 +154,13 @@ public class BooksController {
         return filter;
     }
 
-    private List<BookEntity> getBooks(int begPos, int limit, BookFilter filter, String order) {
-        if(order.isEmpty()){
-            return bookService.findAllBooks(begPos,limit,filter);
-        }
+    private List<BookEntity> getBooks(int begPos, int limit, BookFilter filter, Integer order) {
 
-        if(order=="1"){
+        if (order==null){
+            return bookService.findAllBooks(begPos,limit,filter);
+        } else if(order==1){
             return bookService.findAllMostPopularBooks(begPos,limit,filter);
-        } else if(order=="2"){
+        } else if(order==2){
             return bookService.findAllNewestBooks(begPos,limit,filter);
         } else {
             return bookService.findAllCheapBooks(begPos,limit,filter);
@@ -152,5 +169,41 @@ public class BooksController {
 
     private int calculateBooks(BookFilter filter) {
         return bookService.countAllBooksByFilter(filter);
+    }
+
+    private String getNameCategory(int categoryId){
+
+        if(categoryId!=0) {
+            return categoryService.findById(categoryId).getName();
+        }
+
+        return "Все книги";
+    }
+
+    private String renderPrice(int minPrice, int maxPrice, int limitPrice){
+        if(minPrice!=Integer.parseInt(MIN) || maxPrice!=limitPrice){
+            return Integer.toString(minPrice)+'-'+Integer.toString(maxPrice);
+        }
+        return null;
+    }
+
+    private Integer getMinPrice(String price, int defaultValue){
+        if (price!=null) {
+
+            String[] prices = price.split("-");
+            return Integer.parseInt(prices[0]);
+        }
+
+        return defaultValue;
+    }
+
+    private Integer getMaxPrice(String price, int defaultValue){
+        if (price!=null) {
+
+            String[] prices = price.split("-");
+            return Integer.parseInt(prices[1]);
+        }
+
+        return defaultValue;
     }
 }

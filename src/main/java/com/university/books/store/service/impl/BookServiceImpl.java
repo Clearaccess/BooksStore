@@ -87,4 +87,10 @@ public class BookServiceImpl implements BookService {
         int count=bookDAO.countAllBooksByFilter(filter);
         return count;
     }
+
+    @Override
+    public double maxPriceBooksByCategoryId(long categoryId) {
+        double maxPrice=bookDAO.maxPriceBooksByCategoryId(categoryId);
+        return maxPrice;
+    }
 }

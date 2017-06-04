@@ -5,30 +5,32 @@
     <title>Books</title>
     <!-- Bootstrap -->
     <link th:href="@{/static/vendor/bootstrap/css/bootstrap.min.css}"
-          href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+          href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/static/vendor/bootstrap/css/bootstrap-theme.min.css}"
-          href="static/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+          href="../../static/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
     <!-- Jquery-ui-1.12.1.custom -->
     <link th:href="@{/static/vendor/jquery-ui-1.12.1.custom/css/jquery-ui.min.css}"
-          href="vendor/jquery-ui-1.12.1.custom/css/jquery-ui.min.css" rel="stylesheet">
+          href="../../static/vendor/jquery-ui-1.12.1.custom/css/jquery-ui.min.css" rel="stylesheet">
     <link th:href="@{/static/vendor/jquery-ui-1.12.1.custom/css/jquery-ui.structure.min.css}"
-          href="vendor/jquery-ui-1.12.1.custom/css/jquery-ui.structure.min.css" rel="stylesheet">
+          href="../../static/vendor/jquery-ui-1.12.1.custom/css/jquery-ui.structure.min.css" rel="stylesheet">
     <link th:href="@{/static/vendor/jquery-ui-1.12.1.custom/css/jquery-ui.theme.min.css}"
-          href="vendor/jquery-ui-1.12.1.custom/css/jquery-ui.theme.min.css" rel="stylesheet">
+          href="../../static/vendor/jquery-ui-1.12.1.custom/css/jquery-ui.theme.min.css" rel="stylesheet">
     <!-- Font-awesome -->
     <link th:href="@{/static/vendor/font-awesome/css/font-awesome.min.css}"
-          href="static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+          href="../../static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <!-- OwlCarusel2 -->
     <link rel="stylesheet" th:href="@{/static/vendor/owlcarousel/assets/owl.carousel.min.css}"
-          href="static/vendor/owlcarousel/assets/owl.carousel.min.css">
+          href="../../static/vendor/owlcarousel/assets/owl.carousel.min.css">
     <link rel="stylesheet" th:href="@{/static/vendor/owlcarousel/assets/owl.theme.default.min.css}"
-          href="static/vendor/owlcarousel/assets/owl.theme.default.min.css">
+          href="../../static/vendor/owlcarousel/assets/owl.theme.default.min.css">
     <!-- Custom styles -->
-    <link th:href="@{/static/css/books.css}" href="static/css/books.css" rel="stylesheet" type="text/css">
-    <link th:href="@{/static/css/bootstrap-overrides.css}" href="static/css/bootstrap-overrides.css" rel="stylesheet"
+    <link th:href="@{/static/css/books.css}"
+          href="../../static/css/books.css" rel="stylesheet" type="text/css">
+    <link th:href="@{/static/css/bootstrap-overrides.css}"
+          href="../../static/css/bootstrap-overrides.css" rel="stylesheet"
           type="text/css">
 </head>
-<body>
+<body th:with="urlExt=${(#strings.isEmpty(price)?'':'price/'+price+'/') + (#strings.isEmpty(order)?'':'order/'+order+'/')}">
 
 <div th:replace="/fragments/toolbar.html"></div>
 
@@ -75,7 +77,7 @@
         <div class="col-sm-4">
             <a class="" role="button" data-toggle="collapse" href="#filters" aria-expanded="false"
                aria-controls="collapseExample">
-                <h2>Фильтры</h2>
+                <h2>Фильтры </span> <span class="caret"></span></h2>
             </a>
         </div>
         <div class="col-sm-4">
@@ -101,6 +103,7 @@
                         </form>
                     </div>
                 </div>
+                </br>
             </div>
         </div>
     </div>
@@ -112,12 +115,30 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="row">
-                                    <form action="#">
-                                        <div class="col-sm-3">
-                                            <input name="minPrice" type="number" class="form-control" readonly>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input name="maxPrice" type="number" class="form-control" readonly>
+                                    <form id="formPrice" action="#" th:action="@{${#httpServletRequest.requestURI}}" method="post">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <h3>Цена</h3>
+                                                </br>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <input name="minPrice" type="number" class="form-control" readonly
+                                                    th:value="${minPrice}">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input name="maxPrice" type="number" class="form-control" readonly
+                                                           th:value="${maxPrice}">
+                                                </div>
+                                                <input id ="limitPrice" type="number" class="form-control hidden" readonly
+                                                       th:value="${limitPrice}" th:hidden="true" hidden>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    </br>
+                                                    <div id="slider-range"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </form>
 
@@ -125,24 +146,20 @@
                                         <div class="btn-group">
                                             <a class="dropdown-toggle" role="button" data-toggle="dropdown"
                                                aria-haspopup="true" aria-expanded="false">
-                                                <h3 th:text="${!#strings.isEmpty(order)? mapOrders[order]:'Упорядочить'}">Упорядочить <span class="caret"></span></h3>
+                                                <h3><span
+                                                        th:text="${#strings.isEmpty(order)?mapOrders['0']:mapOrders[__${order}__]}">Упорядочить</span>
+                                                    <span class="caret"></span></h3>
                                             </a>
 
                                             <ul class="dropdown-menu scrollable-menu">
                                                 <li th:each="ord:${mapOrders}">
-                                                    <a href="#1" th:href="@{/books/{catId}page/{numPage}{urlPrice}{urlOrder}(catId=${currentCategory+'/'},numPage='1/', urlPrice=${#strings.isEmpty(price)?'':'price/'+price+'/'},urlOrder='order/'+${ord.key+'/'})}">
+                                                    <a href="#1"
+                                                       th:href="@{/books/{catId}page/{numPage}{urlPrice}{urlOrder}(catId=${currentCategory+'/'},numPage='1/', urlPrice=${#strings.isEmpty(price)?'':'price/'+price+'/'},urlOrder=${ord.key=='0'?'':'order/'+ord.key+'/'})}">
                                                         <h4 th:text="${ord.value}">1</h4>
                                                     </a>
                                                 </li>
                                             </ul>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="panel-footer">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div id="slider-range"></div>
                                     </div>
                                 </div>
                             </div>
@@ -166,15 +183,9 @@
     </div>
 </div>
 
-<p th:text="${#strings.isEmpty(price)?'':'price/'+price+'/'}"></p>
-<p th:text="${#strings.isEmpty(order)?'':'order/'+order+'/'}">
-
 <div class="container">
     <div class="row text-center">
-        <ul class="pagination" th:with="urlExt=${#strings.isEmpty(price)?'':'price/'+price+'/' + #strings.isEmpty(order)?'':'order/'+order+'/'}">
-            <li><a href="#" aria-label="Previous"
-                   th:href="@{/books/{catId}page/{numPage}{urlEnd}(catId=${currentCategory+'/'}, numPage=${currentPage!=1?(currentPage-1)+'/':currentPage+'/'}, urlEnd=${urlExt})}"><span th:text="${urlExt}"
-                    aria-hidden="true">&laquo;</span></a></li>
+        <ul class="pagination">
             <li><a href="#" aria-label="Previous"
                    th:href="@{/books/{catId}page/{numPage}{urlEnd}(catId=${currentCategory+'/'}, numPage=${currentPage!=1?(currentPage-1)+'/':currentPage+'/'}, urlEnd=${urlExt})}"><span
                     aria-hidden="true">&laquo;</span></a></li>
@@ -205,19 +216,24 @@
     </div>
 </div>
 
+</div>
 <div th:replace="/fragments/footer.html"></div>
 
 <!-- jQuery -->
-<script type="text/javascript" th:src="@{/static/vendor/jquery/jquery-3.1.1.min.js}"></script>
+<script type="text/javascript" src="../../static/vendor/jquery/jquery-3.1.1.min.js"
+        th:src="@{/static/vendor/jquery/jquery-3.1.1.min.js}"></script>
 <!--Bootstrap scripts-->
-<script type="text/javascript" th:src="@{/static/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" src="../../static/vendor/bootstrap/js/bootstrap.min.js"
+        th:src="@{/static/vendor/bootstrap/js/bootstrap.min.js}"></script>
 <!-- Jquery-ui-1.12.1.custom -->
-<script src="vendor/jquery-ui-1.12.1.custom/js/jquery-ui.min.js"
+<script src="../../static/vendor/jquery-ui-1.12.1.custom/js/jquery-ui.min.js"
         th:src="@{/static/vendor/jquery-ui-1.12.1.custom/js/jquery-ui.min.js}"></script>
 <!-- OwlCarousal2 -->
-<script type="text/javascript" th:src="@{/static/vendor/owlcarousel/owl.carousel.min.js}"></script>
+<script type="text/javascript" src="../../static/vendor/owlcarousel/owl.carousel.min.js"
+        th:src="@{/static/vendor/owlcarousel/owl.carousel.min.js}"></script>
 <!-- Custom scripts -->
-<script type="text/javascript" th:src="@{/static/js/app.js}"></script>
+<script type="text/javascript" src="../../static/js/app.js"
+        th:src="@{/static/js/app.js}" th:inline="javascript"></script>
 
 </body>
 </html>

@@ -38,4 +38,6 @@ public interface BookDAO {
     int countAllBooks();
 
     int countAllBooksByFilter(BookFilter filter);
+
+    double maxPriceBooksByCategoryId(long categoryId);
 }

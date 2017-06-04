@@ -56,8 +56,11 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("/static/");
     }
+
+
 
     private ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();

@@ -105,8 +105,7 @@ public class MainController {
     //Checkout controller
     @RequestMapping(value = {"/test/"}, method = RequestMethod.GET)
     public String testPage(ModelMap model) {
-        int count = bookService.countAllBooks();
-        System.out.println(count);
+        model.addAttribute("clientToken", 111);
         return "payment";
     }
 
