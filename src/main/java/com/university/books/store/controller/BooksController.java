@@ -4,6 +4,7 @@ package com.university.books.store.controller;
  * Created by Aleksandr on 5/31/2017.
  */
 
+import com.university.books.store.model.dto.BagDTO;
 import com.university.books.store.model.entity.BookEntity;
 import com.university.books.store.model.entity.CategoryEntity;
 import com.university.books.store.model.entity.ReviewEntity;
@@ -11,6 +12,7 @@ import com.university.books.store.model.entity.UserEntity;
 import com.university.books.store.service.*;
 import com.university.books.store.service.filter.BookFilter;
 import com.university.books.store.util.OrderMap;
+import org.hibernate.mapping.Bag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,8 +127,6 @@ public class BooksController {
     }
 
 
-
-    //Book controller
     @RequestMapping(value = {"/book/{id}/"}, method = RequestMethod.GET)
     public String bookPage(ModelMap model, @PathVariable(value = "id") long bookId) {
         BookEntity book = bookService.findById(bookId);
@@ -136,8 +137,33 @@ public class BooksController {
     }
 
     @RequestMapping(value = {"/book/{id}"}, method = RequestMethod.POST, params = {"buy"})
-    public String bookPageBuy(ModelMap model, @PathVariable(value = "id") long bookId) {
+    public String bookPageBuy(HttpSession session,ModelMap model, @PathVariable(value = "id") long bookId) {
+        BagDTO bag;
+        if(session.getAttribute("bag")==null){
+            bag=new BagDTO();
+        } else {
+            bag=(BagDTO) session.getAttribute("bag");
+        }
+
+        BookEntity book=bookService.findById(bookId);
+        if(!bag.getBooks().containsKey(bookId)) {
+            bag.getBooks().put(bookId, 1);
+        }
+
+        System.out.println("Book added in bag");
+        return "book";
+    }
+
+    @RequestMapping(value = {"/book/{id}"}, method = RequestMethod.POST, params = {"addBook"})
+    public String bookPageAddWish(HttpSession session, ModelMap model, @PathVariable(value = "id") long bookId) {
         BookEntity book = bookService.findById(bookId);
+        System.out.println("Book added in wish list");
+        return "book";
+    }
+
+    @RequestMapping(value = {"/book/{id}"}, method = RequestMethod.POST, params = {"delBook"})
+    public String bookDelWish(HttpSession session, ModelMap model, @PathVariable(value = "id") long bookId) {
+        System.out.println("Book deleted from wish list");
         return "book";
     }
 

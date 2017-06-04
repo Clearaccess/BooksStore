@@ -148,7 +148,7 @@ public class UserEntity {
         this.roles = roles;
     }*/
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     public Collection<RoleEntity> getRoles() {
         return roles;

@@ -5,13 +5,17 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.number.NumberStyleFormatter;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -20,6 +24,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.util.NumberUtils;
 
 import java.beans.Encoder;
+import java.util.Set;
 
 /**
  * Created by Aleksandr on 5/27/2017.
@@ -51,6 +56,7 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setEnableSpringELCompiler(true);
         engine.setTemplateResolver(templateResolver());
+        //engine.setAdditionalDialects((Set<IDialect>) new SpringSecurityDialect());
         return engine;
     }
 

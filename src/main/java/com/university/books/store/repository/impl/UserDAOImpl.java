@@ -22,6 +22,34 @@ public class UserDAOImpl extends AbstractDao<Long, UserEntity> implements UserDA
     }
 
     @Override
+    public UserEntity findByLogin(String login) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("login",login).ignoreCase())
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+        List<UserEntity> user = (List<UserEntity>) criteria.list();
+        if(user.size()>0){
+            return user.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
+    public UserEntity findByEmail(String email) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("email",email).ignoreCase())
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+        List<UserEntity> user = (List<UserEntity>) criteria.list();
+        if(user.size()>0){
+            return user.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
     public List<UserEntity> findAllUsers() {
         Criteria criteria = createEntityCriteria();
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

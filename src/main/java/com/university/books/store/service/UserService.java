@@ -11,9 +11,17 @@ import java.util.List;
 public interface UserService {
 
     public UserEntity findUserById(long id);
+
+    public UserEntity findByLogin(String login);
+
+    public UserEntity findByEmail(String email);
+
     public List<UserEntity> findAllUsers();
+
     public void save(UserEntity user);
+
     public void update(UserEntity user);
+
     public void deleteById(long id);
 
 }

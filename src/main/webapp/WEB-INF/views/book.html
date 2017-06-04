@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Books</title>
@@ -126,16 +126,16 @@
                 </div>
             </div>
             <div class="row bs-book-control">
-                <form action="#">
+                <form action="#" th:action="@{/book/{id}(id=${book.bookId})}">
                     <div class="col-sm-6">
-                        <button name="buy" class="btn btn-primary btn-lg btn-block"> Купить</button>
+                        <button type="submit" name="buy" class="btn btn-primary btn-lg btn-block"> Купить</button>
                     </div>
                     <div class="col-sm-6 hidden">
-                        <button name="addBook" class="btn btn-warning btn-lg btn-block"> Добавить в список желаний
+                        <button type="submit" name="addBook" class="btn btn-warning btn-lg btn-block"> Добавить в список желаний
                         </button>
                     </div>
                     <div class="col-sm-6">
-                        <button name="delBook" class="btn btn-danger btn-lg btn-block"> Удалить из списка желаний
+                        <button type="submit" name="delBook" class="btn btn-danger btn-lg btn-block"> Удалить из списка желаний
                         </button>
                     </div>
                 </form>

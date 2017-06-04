@@ -35,6 +35,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity findByLogin(String login) {
+        UserEntity user=userDao.findByLogin(login);
+        return user;
+    }
+
+    @Override
+    public UserEntity findByEmail(String email) {
+        UserEntity user=userDao.findByEmail(email);
+        return user;
+    }
+
+    @Override
     public void save(UserEntity user) {
         userDao.save(user);
     }
