@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Books Store</title>
@@ -33,11 +34,18 @@
     <div class="row">
         <div class="col-sm-offset-4 col-sm-6">
             <form class="form-inline" id="form" action="forget" th:action="@{/forget/}" method="POST">
-                    <div class="form-group">
-                        <label for="email">E-Mail:</label>
-                        <input id="email" name="email" type="text" class="form-control" placeholder="e-mail">
-                    </div>
-                    <button name="restore" type="submit" class="btn btn-default">Восстановить</button>
+                <div th:if="${#request.getAttribute('notice')!=null}" class="alert alert-danger col-sm-8" role="alert">
+                    <p> <span>Пользователя с таким email не существует</span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-Mail:</label>
+                    <input id="email" name="email" type="text" class="form-control" placeholder="e-mail">
+                </div>
+                <button name="restore" type="submit" class="btn btn-default">Восстановить</button>
             </form>
         </div>
     </div>

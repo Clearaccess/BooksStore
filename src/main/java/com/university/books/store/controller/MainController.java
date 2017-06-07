@@ -109,14 +109,6 @@ public class MainController {
         return "payment";
     }
 
-    //Account controller
-    @RequestMapping(value = {"/account/{id}/"}, method = RequestMethod.GET)
-    public String accountPage(ModelMap model) {
-        int count = bookService.countAllBooks();
-        System.out.println(count);
-        return "account";
-    }
-
     /**
      * This method will provide the medium to add a new user.
      */

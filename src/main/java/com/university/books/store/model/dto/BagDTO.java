@@ -9,7 +9,6 @@ import java.util.Map;
  */
 public class BagDTO {
     private Map<Long,Integer>books;
-    private double totalPrice;
 
     public Map<Long, Integer> getBooks() {
         return books;
@@ -17,13 +16,5 @@ public class BagDTO {
 
     public void setBooks(Map<Long, Integer> books) {
         this.books = books;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
     }
 }

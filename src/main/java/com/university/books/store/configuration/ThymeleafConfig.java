@@ -24,6 +24,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.util.NumberUtils;
 
 import java.beans.Encoder;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -52,10 +53,19 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
     }
 
     @Bean
+    public SpringSecurityDialect springSecurityDialect(){
+        SpringSecurityDialect dialect = new SpringSecurityDialect();
+        return dialect;
+    }
+
+    @Bean
     public TemplateEngine templateEngine() {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setEnableSpringELCompiler(true);
         engine.setTemplateResolver(templateResolver());
+        Set<IDialect> dialects = new HashSet<IDialect>();
+        dialects.add(springSecurityDialect());
+        engine.setAdditionalDialects(dialects);
         //engine.setAdditionalDialects((Set<IDialect>) new SpringSecurityDialect());
         return engine;
     }

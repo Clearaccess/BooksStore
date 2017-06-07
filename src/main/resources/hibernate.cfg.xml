@@ -16,6 +16,8 @@
         <property name="format_sql">true</property>
         <!-- NOTE that after automapping with IDEA property username and password will delete -->
         <mapping class="com.university.books.store.model.entity.AddressEntity"/>
+        <mapping class="com.university.books.store.model.entity.BagDetailsEntity"/>
+        <mapping class="com.university.books.store.model.entity.BagEntity"/>
         <mapping class="com.university.books.store.model.entity.BookEntity"/>
         <mapping class="com.university.books.store.model.entity.CategoryEntity"/>
         <mapping class="com.university.books.store.model.entity.CouponEntity"/>

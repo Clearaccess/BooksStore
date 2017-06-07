@@ -1,14 +1,21 @@
 package com.university.books.store.configuration;
 
-import com.university.books.store.service.UserService;
+import com.university.books.store.util.LoginSuccessHandlerImpl;
+import com.university.books.store.util.LogoutSuccessHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Created by Aleksandr on 6/4/2017.
@@ -28,18 +35,37 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().withUser("admin").password("root123").roles("ADMIN");
         auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");//dba have two roles.*/
 
-        //auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
-                .antMatchers("/", "/books/**", "/book/**", "/login/", "/registration/","/forget/").permitAll()
-                .antMatchers("/account/**", "/bag/**", "/checkout/**").access("hasRole('customer') and hasRole('admin')")
-                .and().formLogin().loginPage("/login/")
-                .usernameParameter("ssoId").passwordParameter("password")
-                .and().exceptionHandling().accessDeniedPage("/Access_Denied");
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 
+        http.authorizeRequests()
+                .antMatchers("/", "/books/**", "/book/**", "/login/", "/registration/", "/forget/").permitAll()
+                .antMatchers("/account/**", "/bag/**", "/checkout/**").hasAnyRole("admin","customer")
+                .and()
+                    .formLogin().loginPage("/login/")
+                    .usernameParameter("username").passwordParameter("password")
+                    .successHandler(getLoginHandler())
+                .and()
+                    .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout/"))
+                    .logoutSuccessHandler(getLogoutHandler())
+                .and()
+                    .exceptionHandling().accessDeniedPage("/notAccess/");
+
+    }
+
+    @Bean
+    public LoginSuccessHandlerImpl getLoginHandler(){
+        return new LoginSuccessHandlerImpl();
+    }
+
+    @Bean
+    public LogoutSuccessHandler getLogoutHandler(){
+        return new LogoutSuccessHandlerImpl();
     }
 }

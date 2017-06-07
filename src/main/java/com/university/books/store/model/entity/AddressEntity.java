@@ -157,4 +157,6 @@ public class AddressEntity {
         result = 31 * result + (postCode != null ? postCode.hashCode() : 0);
         return result;
     }
+
+
 }

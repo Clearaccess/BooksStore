@@ -106,7 +106,7 @@ public class UserEntity {
         this.addressesByUserId = addressesByUserId;
     }*/
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     public Collection<AddressEntity> getAddresses() {
         return addresses;
@@ -171,7 +171,7 @@ public class UserEntity {
     }
 */
 
-    @ManyToMany(mappedBy = "wishUsers", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "wishUsers", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     public Collection<BookEntity> getWishBooks() {
         return wishBooks;
@@ -181,7 +181,7 @@ public class UserEntity {
         this.wishBooks = wishBooks;
     }
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     public BagEntity getBag(){
         return bag;

@@ -19,7 +19,7 @@ public class BagDetailsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bd_id")
+    @Column(name = "bd_id", nullable = false)
     public long getBdId() {
         return bdId;
     }

@@ -9,8 +9,8 @@
         <ul class=" nav navbar-nav navbar-right">
             <li><a th:href="@{/books/0/page/1/}">О нас</a></li>
             <li><a th:href="@{/books/0/page/1/}">Поддержка</a></li>
-            <li><a th:href="@{/login/}">Вход</a></li>
-            <li><a th:href="@{/account/(userId)(userId=${1})}">Профиль</a></li>
+            <li th:if="${#authorization.getAuthentication().getName()=='anonymousUser'}"><a th:href="@{/login/}">Вход</a></li>
+            <li sec:authorize="hasAnyRole('admin','customer')"><a th:href="@{/account/}">Профиль</a></li>
             <li><a th:href="@{/bag/}">Корзина <span class="badge">0</span></a></li>
         </ul>
     </div>

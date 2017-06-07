@@ -76,7 +76,7 @@ public class BagEntity {
         this.user = user;
     }
 
-    @OneToMany(mappedBy = "bag", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bag", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     public Collection<BagDetailsEntity> getBagDetails() {
         return bagDetails;

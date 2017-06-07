@@ -139,6 +139,10 @@
 
 </div>
 
+<p th:text="${#authorization.getAuthentication().getDetails()}">
+
+</p>
+
 <div th:replace="/fragments/footer.html"></div>
 
 <!-- jQuery -->

@@ -29,32 +29,39 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String ssoId) throws UsernameNotFoundException {
-        UserEntity userByLogin=userService.findByLogin(ssoId);
-        UserEntity userByEmail=userService.findByEmail(ssoId);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        if(userByLogin==null && userByEmail==null){
+        UserEntity user = getUserFromDB(username);
+        System.out.println(username);
+
+        if (user == null) {
             System.out.println("User not found");
-            throw  new UsernameNotFoundException("Username not found");
+            throw new UsernameNotFoundException("Username not found");
         }
 
-        UserEntity user=getNotNull(userByLogin,userByEmail);
-
-        return new User(user.getLogin(),user.getPassword(),getGrantedAuthorities(user));
+        return new User(user.getLogin(), user.getPassword(), getGrantedAuthorities(user));
     }
 
-    private List<GrantedAuthority> getGrantedAuthorities(UserEntity user){
+    private List<GrantedAuthority> getGrantedAuthorities(UserEntity user) {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-        for(RoleEntity role : user.getRoles()){
-            System.out.println("UserRole : "+role.getDescription());
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getDescription()));
+        for (RoleEntity role : user.getRoles()) {
+            System.out.println("UserRole : " + role.getDescription());
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getDescription()));
         }
-        System.out.print("authorities :"+authorities);
+        System.out.print("authorities :" + authorities);
         return authorities;
     }
 
-    private UserEntity getNotNull(UserEntity userByLogin,UserEntity userByEmail){
-        return userByLogin!=null? userByLogin:userByEmail;
+    private UserEntity getUserFromDB(String username) {
+        UserEntity userByLogin = userService.findByLogin(username);
+        UserEntity userByEmail = userService.findByEmail(username);
+        if (userByLogin != null) {
+            return userByLogin;
+        }
+        if (userByEmail != null) {
+            return userByEmail;
+        }
+        return null;
     }
 }
